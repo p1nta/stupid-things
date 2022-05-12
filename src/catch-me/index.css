@@ -92,3 +92,11 @@ body {
 .m_invisible {
   pointer-events: none;
 }
+
+.coming_soon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: black;
+  background-color: rgba(150, 33, 200, .5);
+}
