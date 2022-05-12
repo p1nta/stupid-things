@@ -1,6 +1,12 @@
 * {
   margin: 0;
 }
+
+.home_button {
+  position: fixed;
+  width: 50px;
+}
+
 .item_conteiner {
   width: 50vw;
   height: 50vw;
