@@ -153,7 +153,7 @@ class UI {
         div.appendChild(front);
         div.appendChild(back);
         if (getImageFunction) {
-          getImageFunction(i, j, square - 1, back);
+          getImageFunction(i, j, square, back);
         }
         this.parentEl.appendChild(div);
       }
