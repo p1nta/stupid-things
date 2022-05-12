@@ -128,7 +128,7 @@ body {
 .flip-box-back {
   background-color: dodgerblue;
   transform: rotateY(180deg);
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
