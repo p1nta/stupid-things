@@ -37,8 +37,8 @@ body {
   display: grid;
   position: relative;
   margin: auto auto;
-  width: calc(var(--size) - 80px);
-  height: calc(var(--size) - 80px);
+  width: calc(var(--size) - 100px);
+  height: calc(var(--size) - 100px);
   background-color: rgba(33, 33, 200, .5);
   border-style: solid;
   border-color: darkGrey;
@@ -49,8 +49,8 @@ body {
 .button {
   border: 1px solid yellow;
   position: absolute;
-  width: calc((var(--size) - 80px) / var(--rows));
-  height: calc((var(--size) - 80px) / var(--rows));
+  width: calc((var(--size) - 100px) / var(--rows));
+  height: calc((var(--size) - 100px) / var(--rows));
   background-color: rgba(33, 200, 33, .5);
   top: 0;
   left: 0;
@@ -82,8 +82,8 @@ body {
 
 .content {
   box-sizing: border-box;
-  width: calc((var(--size) - 80px) / var(--rows));
-  height: calc((var(--size) - 80px) / var(--rows));
+  width: calc((var(--size) - 100px) / var(--rows));
+  height: calc((var(--size) - 100px) / var(--rows));
   border-width: 1px 0 0 1px;
   border-style: solid;
   border-color: darkGrey;
@@ -94,9 +94,7 @@ body {
 }
 
 .coming_soon {
-  position: absolute;
-  top: 0;
-  left: 0;
+  height: 20px;
   color: black;
   background-color: rgba(150, 33, 200, .5);
 }
