@@ -212,10 +212,9 @@ class Picture {
   }
 
   getImgPart = async (i, j, gridSize, element) => {
-    console.log('wp');
     await this.loading;
-    const xStep = this.size.width / gridSize;
-    const yStep = this.size.height / gridSize;
+    const xStep = Math.round(this.size.width / gridSize);
+    const yStep = Math.round(this.size.height / gridSize);
 
     const kx = xStep * j;
     const ky = yStep * i;
