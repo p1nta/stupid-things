@@ -18,7 +18,7 @@
   background-size: cover;
 }
 .gabov {
-  background-image: url('./assets/AlexanderGabov.jpeg');
+  background-image: url('/gabov/assets/AlexanderGabov.jpeg');
 }
 .text {
   position: absolute;
@@ -32,66 +32,66 @@
   color: #ffffff;
 }
 .italy {
-  background-image: url('./assets/italy.png');
+  background-image: url('/gabov/assets/italy.png');
   opacity: 0.3;
 }
 .ukraine {
-  background-image: url('./assets/ukraine.png');
+  background-image: url('/gabov/assets/ukraine.png');
   opacity: 0.3;
 }
 .finn {
-  background-image: url('./assets/finland.png');
+  background-image: url('/gabov/assets/finland.png');
   opacity: 0.3;
 }
 .georgia {
-  background-image: url('./assets/georgia.png');
+  background-image: url('/gabov/assets/georgia.png');
   opacity: 0.3;
 }
 .deutschland {
-  background-image: url('./assets/germany.png');
+  background-image: url('/gabov/assets/germany.png');
   opacity: 0.3;	
 }
 .netherlands {
-  background-image: url('./assets/netherlands.svg');
+  background-image: url('/gabov/assets/netherlands.svg');
   opacity: 0.3;	
 }
 .czech {
-  background-image: url('./assets/czech.png');
+  background-image: url('/gabov/assets/czech.png');
   opacity: 0.3;	
 }
 .france {
-  background-image: url('./assets/france.png');
+  background-image: url('/gabov/assets/france.png');
   opacity: 0.3;	
 }
 .poland {
-  background-image: url('./assets/poland.png');
+  background-image: url('/gabov/assets/poland.png');
   opacity: 0.3;	
 }
 .spanish {
-  background-image: url('./assets/spain.png');
+  background-image: url('/gabov/assets/spain.png');
   opacity: 0.3;	
 }
 .japan {
-  background-image: url('./assets/japan.png');
+  background-image: url('/gabov/assets/japan.png');
   opacity: 0.3;	
 }
 .vietnam {
-  background-image: url('./assets/vietnam.png');
+  background-image: url('/gabov/assets/vietnam.png');
   opacity: 0.3;	
 }
 .brazil {
-  background-image: url('./assets/brazil.png');
+  background-image: url('/gabov/assets/brazil.png');
   opacity: 0.3;	
 }
 .armenia {
-  background-image: url('./assets/armenia.png');
+  background-image: url('/gabov/assets/armenia.png');
   opacity: 0.3;	
 }
 .israel {
-  background-image: url('./assets/israel.png');
+  background-image: url('/gabov/assets/israel.png');
   opacity: 0.3;		
 }
 .trex {
-  background-image: url('./assets/trex.png');
+  background-image: url('/gabov/assets/trex.png');
   opacity: 0.3;			
 }
