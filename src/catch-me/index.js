@@ -219,7 +219,7 @@ class Picture {
     const kx = xStep * j;
     const ky = yStep * i;
 
-    const imageData = this.ctx.getImageData(kx, ky, kx + xStep, ky + yStep);
+    const imageData = this.ctx.getImageData(kx, ky, xStep, yStep);
 
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = imageData.width;
