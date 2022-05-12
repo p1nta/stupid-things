@@ -1,11 +1,27 @@
 class Params {
-  square = 2;
+  _square = 2;
   minSquare = 2;
   maxSquare = 30;
 
-  interval = 200;
+  _interval = 1000;
   minInterval = 200;
   maxInterval = 5000;
+
+  get square() {
+    return this._square;
+  }
+
+  set square(value) {
+    this._square = value;
+  }
+
+  get interval() {
+    return this._interval;
+  }
+
+  set interval(value) {
+    this._interval = value;
+  }
 
   constructor() {}
 
@@ -32,9 +48,17 @@ class Params {
 
 class Game {
   config = [];
-  currentPosition = [0, 0];
   timer;
   interval;
+  position = [0, 0];
+  
+  get currentPosition() {
+    return [...this.position];
+  }
+  
+  set currentPosition(newPosition) {
+    this.position = newPosition;
+  }
 
   constructor(square, interval) {
     this.interval = interval;
@@ -76,6 +100,8 @@ class Game {
 
     this.currentPosition = moves[this.getRandomNumber(0, moves.length - 1)];
 
+    console.log('this.currentPosition', this.currentPosition);
+
     render(this.currentPosition);
   };
 
@@ -107,7 +133,7 @@ class UI {
     this.parentEl = parentEl;
   }
 
-  build = (square, className) => {
+  build = (square, getImageFunction) => {
     this.parentEl.innerHTML = '';
     this.parentEl.style.gridTemplateColumns = `repeat(${square}, 1fr)`;
 
@@ -119,8 +145,15 @@ class UI {
     for (let i = 0; i < square; i += 1) {
       for (let j = 0; j < square; j += 1) {
         const div = document.createElement('div');
-        if (className) {
-          div.classList.add(className);
+        div.classList.add('content');
+        const front = document.createElement('div');
+        front.classList.add('flip-box-front');
+        const back = document.createElement('div');
+        back.classList.add('flip-box-back');
+        div.appendChild(front);
+        div.appendChild(back);
+        if (getImageFunction) {
+          getImageFunction(i, j, back);
         }
         this.parentEl.appendChild(div);
       }
@@ -129,12 +162,74 @@ class UI {
 
   tick = (pos) => {
     this.button.innerText = 'Stop';
-    this.button.style.transform = `translate(${100 * pos[0]}%, ${100 * pos[1]}%)`;
+    this.button.style.transform = `translate(${100 * pos[1]}%, ${100 * pos[0]}%)`;
   };
 
   finishTick = () => {
     this.button.innerText = 'Go on';
   };
+
+  flip = (pos) => {
+    console.log(pos);
+    this.parentEl.childNodes[pos + 1].classList.add('flipped');
+  }
+}
+
+class Picture {
+  canvas = document.createElement('canvas');
+  ctx;
+  img;
+  size = {};
+  loading;
+
+  constructor(url) {
+    this.img = new Image();
+
+    this.img.crossOrigin = 'Anonymous';
+    console.log('gg');
+    this.loading = new Promise((res) => {
+      this.img.onload = () => {
+        this.size = {
+          width: this.img.width,
+          height: this.img.height,
+        };
+  
+        this.drawToCanvasCallback();
+        res();
+      }
+    });
+
+    this.img.src = url;
+  }
+
+  drawToCanvasCallback() {
+    this.canvas.width = this.size.width;
+    this.canvas.height = this.size.height;
+
+    this.ctx = this.canvas.getContext('2d');
+
+    this.ctx.drawImage(this.img, 0, 0, this.size.width, this.size.height);
+  }
+
+  getImgPart = async (i, j, gridSize, element) => {
+    console.log('wp');
+    await this.loading;
+    const xStep = this.size.width / gridSize;
+    const yStep = this.size.height / gridSize;
+
+    const kx = xStep * j;
+    const ky = yStep * i;
+
+    const imageData = this.ctx.getImageData(kx, ky, kx + xStep, ky + yStep);
+
+    const tempCanvas = document.createElement('canvas');
+    const tempCanvasCtx = tempCanvas.getContext('2d');
+    tempCanvas.width = imageData.width;
+    tempCanvas.height = imageData.height;
+    tempCanvasCtx.putImageData(imageData, 0, 0);
+
+    element.style.backgroundImage = `url(${tempCanvas.toDataURL()})`;
+  }
 }
 
 
@@ -145,6 +240,7 @@ window.onload = () => {
   const inputGrid = document.getElementById('grid_input');
   const inputInterval = document.getElementById('interval_input');
   
+  const pictureController = new Picture('/catch-me/assets/megumin.png');
   const uiController = new UI(wrapper);
   const paramsController = new Params();
 
@@ -169,11 +265,13 @@ window.onload = () => {
 
   const rerender = () => {
     const gameController = new Game(paramsController.square, paramsController.interval);
-    uiController.build(paramsController.square, 'content');
+    uiController.build(paramsController.square, pictureController.getImgPart);
 
     const stopMove = () => {
       showInputs();
       gameController.stop(uiController.finishTick);
+      console.log(gameController.currentPosition);
+      uiController.flip(gameController.currentPosition[0] * paramsController.square + gameController.currentPosition[1]);
       uiController.button.onclick = startMove;
     }
 
