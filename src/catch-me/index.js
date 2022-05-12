@@ -222,9 +222,9 @@ class Picture {
     const imageData = this.ctx.getImageData(kx, ky, kx + xStep, ky + yStep);
 
     const tempCanvas = document.createElement('canvas');
-    const tempCanvasCtx = tempCanvas.getContext('2d');
     tempCanvas.width = imageData.width;
     tempCanvas.height = imageData.height;
+    const tempCanvasCtx = tempCanvas.getContext('2d');
     tempCanvasCtx.putImageData(imageData, 0, 0);
 
     element.style.backgroundImage = `url(${tempCanvas.toDataURL()})`;
