@@ -188,15 +188,17 @@ window.onload = () => {
 
   inputGrid.onchange = (e) => {
     paramsController.setSquare(Number(e.target.value));
+    e.target.value = paramsController.square;
 
-    document.body.style.setProperty('--rows', e.target.value);
+    document.body.style.setProperty('--rows', paramsController.square.toString());
     rerender();
   };
 
   inputInterval.onchange = (e) => {
     paramsController.setInterval(Number(e.target.value));
+    e.target.value = paramsController.interval;
 
-    document.body.style.setProperty('--interval', `${e.target.value}ms`);
+    document.body.style.setProperty('--interval', `${paramsController.interval}ms`);
     rerender();
   };
 
