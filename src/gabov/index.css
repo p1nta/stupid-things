@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+}
+.item_conteiner {
+  width: 50vw;
+  height: 50vw;
+  position: relative;
+  display: inline-block;
+}
+.image_block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+.gabov {
+  background-image: url('./assets/AlexanderGabov.jpeg');
+}
+.text {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-style: italic;
+  font-weight: bold;
+  font-size: 50px;
+  white-space: nowrap;
+  color: #ffffff;
+}
+.italy {
+  background-image: url('./assets/italy.png');
+  opacity: 0.3;
+}
+.ukraine {
+  background-image: url('./assets/ukraine.png');
+  opacity: 0.3;
+}
+.finn {
+  background-image: url('./assets/finland.png');
+  opacity: 0.3;
+}
+.georgia {
+  background-image: url('./assets/georgia.png');
+  opacity: 0.3;
+}
+.deutschland {
+  background-image: url('./assets/germany.png');
+  opacity: 0.3;	
+}
+.netherlands {
+  background-image: url('./assets/netherlands.svg');
+  opacity: 0.3;	
+}
+.czech {
+  background-image: url('./assets/czech.png');
+  opacity: 0.3;	
+}
+.france {
+  background-image: url('./assets/france.png');
+  opacity: 0.3;	
+}
+.poland {
+  background-image: url('./assets/poland.png');
+  opacity: 0.3;	
+}
+.spanish {
+  background-image: url('./assets/spain.png');
+  opacity: 0.3;	
+}
+.japan {
+  background-image: url('./assets/japan.png');
+  opacity: 0.3;	
+}
+.vietnam {
+  background-image: url('./assets/vietnam.png');
+  opacity: 0.3;	
+}
+.brazil {
+  background-image: url('./assets/brazil.png');
+  opacity: 0.3;	
+}
+.armenia {
+  background-image: url('./assets/armenia.png');
+  opacity: 0.3;	
+}
+.israel {
+  background-image: url('./assets/israel.png');
+  opacity: 0.3;		
+}
+.trex {
+  background-image: url('./assets/trex.png');
+  opacity: 0.3;			
+}
