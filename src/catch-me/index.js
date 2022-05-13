@@ -182,7 +182,7 @@ class Picture {
   ctx;
   img;
   size = {};
-  loading;
+  loading = new Promise((res) => res);
 
   constructor() {
     this.getConfig()
@@ -192,18 +192,19 @@ class Picture {
         const url = images[getRandomNumber(0, images.length - 1)];
 
         this.img.crossOrigin = 'Anonymous';
-        console.log('gg');
-        this.loading = new Promise((res) => {
-          this.img.onload = () => {
-            this.size = {
-              width: this.img.width,
-              height: this.img.height,
-            };
-      
-            this.drawToCanvasCallback();
-            res();
-          }
-        });
+
+        this.loading
+          .then((res) => {
+            this.img.onload = () => {
+              this.size = {
+                width: this.img.width,
+                height: this.img.height,
+              };
+        
+              this.drawToCanvasCallback();
+              res();
+            }
+          });
     
         this.img.src = url;
       });
