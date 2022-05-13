@@ -243,10 +243,10 @@
               };
 
               const { offsetHeight, offsetWidth } = document.body;
-              let k = Math.max(this.size.height / (offsetHeight - 100), this.size.width / (offsetWidth - 100));
+              let k = Math.max(this.size.height / (offsetHeight - 100), this.size.width / offsetWidth);
 
               if (k < 1) {
-                let k = Math.min(this.size.height / (offsetHeight - 100), this.size.width / (offsetWidth - 100));
+                let k = Math.min(this.size.height / (offsetHeight - 100), this.size.width / offsetWidth);
               }
 
               document.body.style.setProperty('--width', `${this.size.width / k}px`);
