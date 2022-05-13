@@ -250,7 +250,7 @@ class Picture {
 
     this.ctx = this.canvas.getContext('2d');
 
-    this.ctx.drawImage(this.img, 0, 0, this.size.width, this.size.height);
+    this.ctx.drawImage(this.img, 0, 0, this.size.width, this.size.height, 0, 0, this.size.width, this.size.height);
   }
 
   getImgPart = async (i, j, gridSize, element) => {
