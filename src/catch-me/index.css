@@ -78,7 +78,7 @@ body {
 
 
 .input_wrapper {
-  height: 40px;
+  height: 100px;
   padding: 5px;
   text-align: center;
   display: flex;
@@ -86,9 +86,9 @@ body {
 }
 
 .input {
-  display: inline-block;
+  display: block;
   padding: 0 4px;
-  width: 50px;
+  width: 80px;
   height: 30px;
   border: 1px solid yellow;
 }
