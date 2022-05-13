@@ -88,7 +88,6 @@ body {
 .input {
   display: block;
   padding: 0 4px;
-  width: 80px;
   height: 30px;
   border: 1px solid yellow;
 }
