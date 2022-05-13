@@ -65,7 +65,7 @@ class Params {
   }
 
   setInterval = (interval) => {
-    if (interval < this.minSquare) {
+    if (interval < this.minInterval) {
       this._interval = this.minInterval;
     } else if (interval > this.maxInterval) {
       this._interval = this.maxInterval;
