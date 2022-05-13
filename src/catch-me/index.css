@@ -25,6 +25,7 @@ body {
   position: fixed;
 }
 
+
 .base {
   width: 100vw;
   height: 100vh;
@@ -33,35 +34,104 @@ body {
   left: 0;
 }
 
+
+.header {
+  background-color: rgba(150, 33, 200, .5);
+  height: 50px;
+  line-height: 25px;
+  font-size: 1rem;
+  color: black;
+  font-size: 0;
+}
+
 .home_button {
+  vertical-align: middle;
   box-sizing: border-box;
-  position: fixed;
+  display: inline-block;
   z-index: 2;
   width: 50px;
   height: 50px;
   border: none;
   background: transparent;
-  top: 5px;
-  left: 5px;
   padding: 5px;
   cursor: pointer;
 }
 
+.header_text_block {
+  vertical-align: middle;
+  padding-left: 10px;
+  font-size: 1rem;
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+  width: calc(100% - 50px);
+}
 
-.wrapper {
+.header_text_block > a {
+  color: rgba(100, 50, 150, .8);
+}
+
+.app_wrapper {
+  height: calc(100% - 50px);
+}
+
+.app_config_block {
+  height: 60px;
+  padding: 5px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 5px;
+}
+
+.app_config_block_item {
+  width: 100%;
+  line-height: 25px;
+}
+
+.app_config_block_item_input {
+  display: block;
+  width: 100%;
+  padding: 0 4px;
+  height: 25px;
+  border: 1px solid rgba(150, 50, 150, .5);
+  border-radius: 5px;
+}
+
+.app_config_block_item_button {
+  font-size: 1.5rem;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background-color: rgba(150, 50, 150, .5);
+  cursor: pointer;
+}
+
+.content_wrapper {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 60px);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+  padding: 0 5px 5px;
+}
+
+.play_board {
   display: grid;
   position: relative;
-  margin: auto auto;
   width: var(--width);
   height: var(--height);
   background-color: rgba(33, 33, 200, .5);
   border-style: solid;
   border-color: darkGrey;
-  border-width: 0 1px 1px 0;
+  border-width: 1px;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
-
-.button {
+.catch_button {
   z-index: 2;
   border: 1px solid yellow;
   position: absolute;
@@ -74,35 +144,30 @@ body {
   will-change: unset;
   color: yellow;
   padding: 0;
+  font-size: 1rem;
 }
 
-
-.input_wrapper {
-  height: 60px;
-  padding: 5px;
-  text-align: center;
-  display: flex;
-  justify-content: space-between;
+.loader {
+  visibility: visible;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: linearGradient(to right, red, blue);
 }
 
-.input {
-  display: block;
-  width: 100%;
-  padding: 0 4px;
-  height: 30px;
-  border: 1px solid yellow;
+[data-game-started="true"] .loader {
+  visibility: hidden;
 }
 
-.input_item_wrapper {
-  width: 100%;
-  padding: 0 10px;
-}
+/* titles styles */
 
-.content {
+.flip_box {
   box-sizing: border-box;
   width: calc(var(--width) / var(--rows));
   height: calc(var(--height) / var(--rows));
-  border-width: 1px 0 0 1px;
+  border-width: 0.5px;
   border-style: solid;
   border-color: darkGrey;
   position: relative;
@@ -111,8 +176,8 @@ body {
   perspective: 1000px;
 }
 
-.flip-box-front,
-.flip-box-back {
+.flip_box_front,
+.flip_box_back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -120,34 +185,28 @@ body {
   backface-visibility: hidden;
 }
 
-/* Style the front side */
-.flip-box-front {
-  background-color: rgba(33, 33, 200, .5);
+.flip_box_front {
+  background-color: rgba(150, 50, 150, .5);
   color: black;
 }
 
-/* Style the back side */
-.flip-box-back {
+.flip_box_back {
   background-color: dodgerblue;
   transform: rotateY(180deg);
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-.flipped {
+.m_flipped {
   transform: rotateY(180deg);
 }
 
-.m_invisible {
+.m_disabled_input {
+  border: 1px solid rgba(150, 150, 150, .5);
+  color: rgba(150, 150, 150, .5);
   pointer-events: none;
 }
 
-.coming_soon {
-  height: 20px;
-  color: black;
-  background-color: rgba(150, 33, 200, .5);
-}
-
-.no-border {
+.m_no_border {
   border: none !important;
 }

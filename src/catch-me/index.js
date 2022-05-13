@@ -3,40 +3,10 @@
     return Math.round(Math.random() * (max - min) + min);
   }
 
-
-  function getWidth(r, h) {
-    return r * h;
-  }
-
-  function getHeight(r, w) {
-    return w / r;
-  }
-
-  function getMaxAvailableSize(
-    r,
-    maxWidth,
-    maxHeight,
-  ) {
-    if (maxWidth) {
-      const height = getHeight(r, maxWidth);
-
-      if (height <= maxHeight) {
-        return {
-          height,
-          width: maxWidth,
-        };
-      }
-    }
-
-    return {
-      width: getWidth(r, maxHeight),
-      height: maxHeight,
-    };
-  }
-
   let images;
 
   class Params {
+    _changed = false;
     _square = 2;
     minSquare = 2;
     maxSquare = 30;
@@ -53,6 +23,10 @@
       return this._interval;
     }
 
+    get changed() {
+      return this._changed;
+    }
+
     constructor() {}
 
     setSquare = (square) => {
@@ -63,6 +37,8 @@
       } else {
         this._square = square;
       }
+
+      this._changed = true;
     }
 
     setInterval = (interval) => {
@@ -73,6 +49,12 @@
       } else {
         this._interval = interval;
       }
+
+      this._changed = true;
+    }
+
+    makeActual = () => {
+      this._changed = false;
     }
   }
 
@@ -135,7 +117,10 @@
 
     start = (render) => {
       if (!this.timer) {
-        this.getPosition(render);
+        document.body.setAttribute('data-game-started', 'true');
+        if (render) {
+          this.getPosition(render);
+        }
 
         this.timer = setInterval(
           () => this.getPosition(render),
@@ -150,6 +135,14 @@
         this.timer = 0;
       }
     };
+
+    toggleGame = (render) => {
+      if (this.timer) {
+        this.stop()
+      } else {
+        this.start(render);
+      }
+    }
 
     catchPosition = () => {
       const pos = this.currentPosition.join('');
@@ -182,18 +175,19 @@
       this.parentEl.style.gridTemplateColumns = `repeat(${square}, 1fr)`;
 
       this.button = document.createElement('button');
-      this.button.classList.add('button');
-      this.button.innerText = 'Start';
+      this.button.tabIndex = -1;
+      this.button.classList.add('catch_button');
+      this.button.innerText = 'Catch';
       this.parentEl.appendChild(this.button);
 
       for (let i = 0; i < square; i += 1) {
         for (let j = 0; j < square; j += 1) {
           const div = document.createElement('div');
-          div.classList.add('content');
+          div.classList.add('flip_box');
           const front = document.createElement('div');
-          front.classList.add('flip-box-front');
+          front.classList.add('flip_box_front');
           const back = document.createElement('div');
-          back.classList.add('flip-box-back');
+          back.classList.add('flip_box_back');
           div.appendChild(front);
           div.appendChild(back);
           if (getImageFunction) {
@@ -208,7 +202,7 @@
       this.parentEl.removeChild(this.button);
 
       this.parentEl.childNodes.forEach((element) => {
-        element.classList.add('no-border');
+        element.classList.add('m_no_border');
       });
     }
 
@@ -218,7 +212,7 @@
     };
 
     flip = (pos) => {
-      this.parentEl.childNodes[pos + 1].classList.toggle('flipped');
+      this.parentEl.childNodes[pos + 1].classList.toggle('m_flipped');
     }
   }
 
@@ -229,12 +223,13 @@
     size = {};
     loading;
 
-    constructor() {
+    constructor(wrapperEl) {
       this.loading = this.getConfig()
         .then(() => {
           this.img = new Image();
 
           const url = images[getRandomNumber(0, images.length - 1)];
+          // const url = './assets/megumin.png';
 
           this.img.crossOrigin = 'Anonymous';
 
@@ -245,11 +240,14 @@
                 height: this.img.height,
               };
 
-              const { offsetHeight, offsetWidth } = document.body;
-              let k = Math.max(this.size.height / (offsetHeight - 100), this.size.width / (offsetWidth - 10));
+              const { clientHeight, clientWidth } = wrapperEl;
+              const h = clientHeight - 5;
+              const w = clientWidth - 10;
+
+              let k = Math.max(this.size.height / h, this.size.width / w);
 
               if (k < 1) {
-                let k = Math.min(this.size.height / (offsetHeight - 100), this.size.width / (offsetWidth - 10));
+                let k = Math.min(this.size.height / h, this.size.width / w);
               }
 
               document.body.style.setProperty('--width', `${this.size.width / k}px`);
@@ -268,7 +266,8 @@
 
     getConfig() {
       if (!images) {
-        return fetch('/catch-me/assets/images.json')
+        // return fetch('/catch-me/assets/images.json')
+        return fetch('./assets/images.json')
           .then((res) => res.json())
           .then((res) => {
             images = res;
@@ -291,8 +290,8 @@
       if (this.loading) {
         await this.loading;
           
-        const xStep = Math.round(this.size.width / gridSize);
-        const yStep = Math.round(this.size.height / gridSize);
+        const xStep = this.size.width / gridSize;
+        const yStep = this.size.height / gridSize;
 
         const kx = xStep * j;
         const ky = yStep * i;
@@ -316,58 +315,85 @@
   document.body.style.setProperty('--interval', '1000ms');
 
   window.onload = () => {
-    const wrapper = document.getElementById('wrapper');
-    const restartBtn = document.getElementById('restart');
+    const playBoard = document.getElementById('play_board');
+    const startButton = document.getElementById('restart');
     const inputGrid = document.getElementById('grid_input');
     const inputInterval = document.getElementById('interval_input');
     
-    const uiController = new UI(wrapper);
+    const uiController = new UI(playBoard);
     const paramsController = new Params();
     let gameController = new Game(paramsController.square, paramsController.interval);
 
     inputGrid.value = paramsController.square;
     inputInterval.value = paramsController.interval;
 
-    const showInputs = () => {
-      inputGrid.readonly = false;
-      inputGrid.classList.remove('m_invisible');
+    const enableConfigEditing = () => {
+      inputGrid.disabled = false;
+      inputGrid.classList.remove('m_disabled_input');
 
-      inputInterval.readonly = false;
-      inputInterval.classList.remove('m_invisible');
+      inputInterval.disabled = false;
+      inputInterval.classList.remove('m_disabled_input');
     };
 
-    const hideInputs = () => {
-      inputGrid.classList.add('m_invisible');
-      inputGrid.readonly = true;
+    const disableConfigEditing = () => {
+      inputGrid.classList.add('m_disabled_input');
+      inputGrid.disabled = true;
 
-      inputInterval.classList.add('m_invisible');
-      inputInterval.readonly = true;
+      inputInterval.classList.add('m_disabled_input');
+      inputInterval.disabled = true;
     };
 
-    const rerender = () => {
-      const pictureController = new Picture();
+    function rerender(startGame) {
+      document.body.setAttribute('data-game-started', 'false')
+      document.body.style.setProperty('--width', '0px');
+      document.body.style.setProperty('--height', '0px');
+      const pictureController = new Picture(playBoard.parentElement);
       gameController.stop();
       gameController = new Game(paramsController.square, paramsController.interval);
-      uiController.build(paramsController.square, pictureController.getImgPart);
+      paramsController.makeActual();
 
       const catchPosition = () => {
-        showInputs();
         gameController.catchPosition();
         uiController.flip(gameController.currentPosition[0] * paramsController.square + gameController.currentPosition[1]);
 
         if (gameController.complete) {
           uiController.removeStartButton();
-          showInputs();
+          enableConfigEditing();
+          startButton.innerText = 'Restart';
+          startButton.onclick = () =>  rerender(true);
         }
       }
 
-      const startMove = () => {
-        hideInputs();
+
+      if (startGame) {
+        uiController.build(paramsController.square, pictureController.getImgPart);
+        disableConfigEditing();
         gameController.start(uiController.tick);
         uiController.button.onclick = catchPosition;
-      }
 
-      uiController.button.onclick = startMove;
+        const callback = () => {
+          if (!paramsController.changed) {
+            gameController.toggleGame(uiController.tick);
+            
+            if (gameController.timer) {
+              startButton.innerText = 'Pause';
+              uiController.button.style.visibility = 'visible'
+              uiController.button.onclick = catchPosition;
+              disableConfigEditing();
+            } else {
+              startButton.innerText = 'Continue';
+              uiController.button.style.visibility = 'hidden'
+              uiController.button.onclick = null;
+              enableConfigEditing();
+            }
+          } else {
+            rerender(true);
+          }
+        }
+
+        startButton.innerText = 'Pause';
+        startButton.onclick = callback;
+      }
     }
 
     inputGrid.onchange = (e) => {
@@ -375,7 +401,10 @@
       e.target.value = paramsController.square;
 
       document.body.style.setProperty('--rows', paramsController.square.toString());
-      rerender();
+
+      startButton.innerText = 'Start';
+      playBoard.innerHTML = ''
+      document.body.setAttribute('data-game-started', 'false');
     };
 
     inputInterval.onchange = (e) => {
@@ -383,11 +412,12 @@
       e.target.value = paramsController.interval;
 
       document.body.style.setProperty('--interval', `${paramsController.interval}ms`);
-      rerender();
+
+      startButton.innerText = 'Start';
+      playBoard.innerHTML = ''
+      document.body.setAttribute('data-game-started', 'false');
     };
 
-    restartBtn.onclick = rerender;
-
-    rerender();
+    startButton.onclick = () =>  rerender(true);
   }
 })();
