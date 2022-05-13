@@ -242,7 +242,7 @@ class Picture {
               height: this.img.height,
             };
 
-            const k = this.size.height / this.size.width;
+            const k = Math.min(this.size.height, this.size.height) / Math.max(this.size.height, this.size.width);
 
             const { offsetHeight, offsetWidth } = document.body;
 
