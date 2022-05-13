@@ -1,3 +1,9 @@
+function getRandomNumber(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+
+let images;
+
 class Params {
   _square = 2;
   minSquare = 2;
@@ -89,16 +95,12 @@ class Game {
     }
   }
 
-  getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
-  }
-
   getPosition = (render) => {
     const raw = this.currentPosition[0];
     const col = this.currentPosition[1];
     const moves = this.config[raw][col];
 
-    this.currentPosition = moves[this.getRandomNumber(0, moves.length - 1)];
+    this.currentPosition = moves[getRandomNumber(0, moves.length - 1)];
 
     console.log('this.currentPosition', this.currentPosition);
 
@@ -161,7 +163,7 @@ class UI {
   };
 
   tick = (pos) => {
-    this.button.innerText = 'Stop';
+    this.button.innerText = 'Catch';
     this.button.style.transform = `translate(${100 * pos[1]}%, ${100 * pos[0]}%)`;
   };
 
@@ -182,24 +184,41 @@ class Picture {
   size = {};
   loading;
 
-  constructor(url) {
-    this.img = new Image();
+  constructor() {
+    this.getConfig()
+      .then(() => {
+        this.img = new Image();
 
-    this.img.crossOrigin = 'Anonymous';
-    console.log('gg');
-    this.loading = new Promise((res) => {
-      this.img.onload = () => {
-        this.size = {
-          width: this.img.width,
-          height: this.img.height,
-        };
-  
-        this.drawToCanvasCallback();
-        res();
-      }
-    });
+        const url = images[getRandomNumber(0, images.length - 1)];
 
-    this.img.src = url;
+        this.img.crossOrigin = 'Anonymous';
+        console.log('gg');
+        this.loading = new Promise((res) => {
+          this.img.onload = () => {
+            this.size = {
+              width: this.img.width,
+              height: this.img.height,
+            };
+      
+            this.drawToCanvasCallback();
+            res();
+          }
+        });
+    
+        this.img.src = url;
+      });
+  }
+
+  getConfig() {
+    if (!images) {
+      return fetch('/catch-me/assets/images.json')
+        .then((res) => res.json())
+        .then((res) => {
+          images = res;
+        });
+    }
+
+    return Promise.resolve();
   }
 
   drawToCanvasCallback() {
@@ -239,7 +258,7 @@ window.onload = () => {
   const inputGrid = document.getElementById('grid_input');
   const inputInterval = document.getElementById('interval_input');
   
-  const pictureController = new Picture('/catch-me/assets/megumin.png');
+  const pictureController = new Picture();
   const uiController = new UI(wrapper);
   const paramsController = new Params();
 
