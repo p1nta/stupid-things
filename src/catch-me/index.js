@@ -313,6 +313,7 @@
 
   document.body.style.setProperty('--width', '0px');
   document.body.style.setProperty('--height', '0px');
+  document.body.style.setProperty('--interval', '1000ms');
 
   window.onload = () => {
     const wrapper = document.getElementById('wrapper');
