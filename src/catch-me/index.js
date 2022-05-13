@@ -211,7 +211,7 @@ class Picture {
               height: this.img.height,
             };
 
-            const k = this.size.height / this.size.width;
+            const k = Math.min(this.size.height, this.size.width) / Math.max(this.size.height, this.size.width);
 
             const { offsetHeight, offsetWidth } = document.body;
             const min = Math.min(offsetHeight, offsetWidth);
@@ -220,7 +220,7 @@ class Picture {
               document.body.style.setProperty('--width', `${min}px`);
               document.body.style.setProperty('--height', `${min * k}px`);
             } else {
-              document.body.style.setProperty('--width', `${min / k}px`);
+              document.body.style.setProperty('--width', `${min * k}px`);
               document.body.style.setProperty('--height', `${min}px`);
             }
       
