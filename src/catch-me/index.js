@@ -177,6 +177,10 @@ class UI {
 
   removeStartButton = () => {
     this.parentEl.removeChild(this.button);
+
+    this.parentEl.childNodes.forEach((element) => {
+      element.classList.add('no-border');
+    });
   }
 
   tick = (pos) => {

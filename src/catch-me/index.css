@@ -145,3 +145,7 @@ body {
   color: black;
   background-color: rgba(150, 33, 200, .5);
 }
+
+.no-border {
+  border: none !important;
+}
