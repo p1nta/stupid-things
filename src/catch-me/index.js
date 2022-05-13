@@ -312,6 +312,7 @@ document.body.style.setProperty('--height', '0px');
 
 window.onload = () => {
   const wrapper = document.getElementById('wrapper');
+  const restartBtn = document.getElementById('restart');
   const inputGrid = document.getElementById('grid_input');
   const inputInterval = document.getElementById('interval_input');
   
@@ -379,6 +380,8 @@ window.onload = () => {
     document.body.style.setProperty('--interval', `${paramsController.interval}ms`);
     rerender();
   };
+
+  restartBtn.onclick = rerender;
 
   rerender();
 }

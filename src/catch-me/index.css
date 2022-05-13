@@ -81,6 +81,8 @@ body {
   height: 40px;
   padding: 5px;
   text-align: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .input {
@@ -92,7 +94,7 @@ body {
 }
 
 .input_item_wrapper {
-  display: inline-block;
+  width: 100%;
   padding: 0 10px;
 }
 
