@@ -242,14 +242,11 @@ class Picture {
               height: this.img.height,
             };
 
-            const k = Math.min(this.size.height, this.size.height) / Math.max(this.size.height, this.size.width);
-
             const { offsetHeight, offsetWidth } = document.body;
+            const k = Math.min(this.size.height / offsetHeight, this.size.width / offsetWidth);
 
-            const { width, height } = getMaxAvailableSize(k, offsetWidth, offsetHeight);
-
-            document.body.style.setProperty('--width', `${width}px`);
-            document.body.style.setProperty('--height', `${height}px`);
+            document.body.style.setProperty('--width', `${this.size.width * k}px`);
+            document.body.style.setProperty('--height', `${this.size.height * k}px`);
       
             this.drawToCanvasCallback();
             res();
