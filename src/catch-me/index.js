@@ -185,7 +185,7 @@ class Picture {
   loading;
 
   constructor() {
-    this.getConfig()
+    this.loading = this.getConfig()
       .then(() => {
         this.img = new Image();
 
@@ -193,7 +193,7 @@ class Picture {
 
         this.img.crossOrigin = 'Anonymous';
 
-        this.loading = new Promise((res) => {
+        const promise = new Promise((res) => {
           this.img.onload = () => {
             this.size = {
               width: Math.min(this.img.width, this.img.height),
@@ -206,6 +206,8 @@ class Picture {
         });
     
         this.img.src = url;
+
+        return promise;
       });
   }
 
