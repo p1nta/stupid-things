@@ -143,22 +143,25 @@ class Game {
     }
   };
 
-  stop = (callback) => {
+  stop = () => {
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = 0;
-      callback();
-      const pos = this.currentPosition.join('');
-
-      if (!this.visible.includes(pos)) {
-        this.visible.push(pos);
-      }
-
-      if (this.visible.length === Math.pow(this.square, 2)) {
-        this.complete = true;
-      }
     }
   };
+
+  catchPosition = () => {
+    const pos = this.currentPosition.join('');
+
+    if (!this.visible.includes(pos)) {
+      this.visible.push(pos);
+    }
+
+    if (this.visible.length === Math.pow(this.square, 2)) {
+      this.complete = true;
+      this.stop();
+    }
+  }
 }
 
 class UI {
@@ -207,10 +210,6 @@ class UI {
   tick = (pos) => {
     this.button.innerText = 'Catch';
     this.button.style.transform = `translate(${100 * pos[1]}%, ${100 * pos[0]}%)`;
-  };
-
-  finishTick = () => {
-    this.button.innerText = 'Go on';
   };
 
   flip = (pos) => {
@@ -319,6 +318,7 @@ window.onload = () => {
   const pictureController = new Picture();
   const uiController = new UI(wrapper);
   const paramsController = new Params();
+  let gameController = new Game(paramsController.square, paramsController.interval);
 
   inputGrid.value = paramsController.square;
   inputInterval.value = paramsController.interval;
@@ -340,13 +340,13 @@ window.onload = () => {
   };
 
   const rerender = () => {
-    const gameController = new Game(paramsController.square, paramsController.interval);
+    gameController.stop();
+    gameController = new Game(paramsController.square, paramsController.interval);
     uiController.build(paramsController.square, pictureController.getImgPart);
 
-    const stopMove = () => {
+    const catchPosition = () => {
       showInputs();
-      gameController.stop(uiController.finishTick);
-      console.log(gameController.currentPosition);
+      gameController.catchPosition();
       uiController.flip(gameController.currentPosition[0] * paramsController.square + gameController.currentPosition[1]);
 
       if (gameController.complete) {
@@ -359,7 +359,7 @@ window.onload = () => {
     const startMove = () => {
       hideInputs();
       gameController.start(uiController.tick);
-      uiController.button.onclick = stopMove;
+      uiController.button.onclick = catchPosition;
     }
 
     uiController.button.onclick = startMove;
