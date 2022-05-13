@@ -123,8 +123,8 @@ class Game {
   }
 
   getPosition = (render) => {
-    const raw = this.currentPosition[0];
-    const col = this.currentPosition[1];
+    const raw = this.position[0];
+    const col = this.position[1];
     const moves = this.config[raw][col];
 
     this.currentPosition = moves[getRandomNumber(0, moves.length - 1)];
@@ -351,8 +351,7 @@ window.onload = () => {
 
       if (gameController.complete) {
         uiController.removeStartButton();
-      } else {
-        uiController.button.onclick = startMove;
+        showInputs();
       }
     }
 
