@@ -38,7 +38,6 @@ body {
 .header {
   background-color: rgba(150, 33, 200, .5);
   height: 50px;
-  line-height: 25px;
   font-size: 1rem;
   color: black;
   font-size: 0;
@@ -60,6 +59,7 @@ body {
 .header_text_block {
   vertical-align: middle;
   padding-left: 10px;
+  line-height: 1rem;
   font-size: 1rem;
   color: black;
   text-decoration: none;
@@ -214,6 +214,5 @@ body {
 @media screen and (max-width: 600px) {
   .header_text_block {
     font-size: 0.9rem;
-    line-height: 1rem;
   }
 }
