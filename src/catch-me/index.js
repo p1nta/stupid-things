@@ -53,10 +53,13 @@ class Params {
 }
 
 class Game {
+  square;
   config = [];
   timer;
   interval;
   position = [0, 0];
+  visible = [];
+  complete = false;
   
   get currentPosition() {
     return [...this.position];
@@ -67,6 +70,7 @@ class Game {
   }
 
   constructor(square, interval) {
+    this.square = square;
     this.interval = interval;
     for (let i = 0; i < square; i += 1) {
       this.config.push([]);
@@ -123,6 +127,15 @@ class Game {
       clearInterval(this.timer);
       this.timer = 0;
       callback();
+      const pos = this.currentPosition.join('');
+
+      if (!this.visible.includes(pos)) {
+        this.visible.push(pos);
+      }
+
+      if (this.visible.length === Math.pow(this.square, 2)) {
+        this.complete = true;
+      }
     }
   };
 }
@@ -161,6 +174,10 @@ class UI {
       }
     }
   };
+
+  removeStartButton = () => {
+    this.parentEl.removeChild(this.button);
+  }
 
   tick = (pos) => {
     this.button.innerText = 'Catch';
@@ -295,7 +312,12 @@ window.onload = () => {
       gameController.stop(uiController.finishTick);
       console.log(gameController.currentPosition);
       uiController.flip(gameController.currentPosition[0] * paramsController.square + gameController.currentPosition[1]);
-      uiController.button.onclick = startMove;
+
+      if (gameController.complete) {
+        uiController.removeStartButton();
+      } else {
+        uiController.button.onclick = startMove;
+      }
     }
 
     const startMove = () => {
