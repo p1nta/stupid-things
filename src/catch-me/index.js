@@ -216,8 +216,13 @@ class Picture {
             const { offsetHeight, offsetWidth } = document.body;
             const min = Math.min(offsetHeight, offsetWidth);
 
-            document.body.style.setProperty('--width', `${min}px`);
-            document.body.style.setProperty('--height', `${min * k}px`);
+            if (min === offsetWidth) {
+              document.body.style.setProperty('--width', `${min}px`);
+              document.body.style.setProperty('--height', `${min * k}px`);
+            } else {
+              document.body.style.setProperty('--width', `${min / k}px`);
+              document.body.style.setProperty('--height', `${min}px`);
+            }
       
             this.drawToCanvasCallback();
             res();
