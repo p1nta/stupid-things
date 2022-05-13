@@ -2,6 +2,37 @@ function getRandomNumber(min, max) {
   return Math.round(Math.random() * (max - min) + min);
 }
 
+
+function getWidth(r, h) {
+  return r * h;
+}
+
+function getHeight(r, w) {
+  return w / r;
+}
+
+export function getMaxAvailableSize(
+  r,
+  maxWidth,
+  maxHeight,
+) {
+  if (maxWidth) {
+    const height = getHeight(r, maxWidth);
+
+    if (height <= maxHeight) {
+      return {
+        height,
+        width: maxWidth,
+      };
+    }
+  }
+
+  return {
+    width: getWidth(r, maxHeight),
+    height: maxHeight,
+  };
+}
+
 let images;
 
 class Params {
@@ -211,18 +242,14 @@ class Picture {
               height: this.img.height,
             };
 
-            const k = Math.min(this.size.height, this.size.width) / Math.max(this.size.height, this.size.width);
+            const k = this.size.height / this.size.width;
 
             const { offsetHeight, offsetWidth } = document.body;
-            const min = Math.min(offsetHeight, offsetWidth);
 
-            if (min === offsetWidth) {
-              document.body.style.setProperty('--width', `${min}px`);
-              document.body.style.setProperty('--height', `${min * k}px`);
-            } else {
-              document.body.style.setProperty('--width', `${min * k}px`);
-              document.body.style.setProperty('--height', `${min}px`);
-            }
+            const { width, height } = getMaxAvailableSize(k, offsetWidth, offsetHeight);
+
+            document.body.style.setProperty('--width', `${width}px`);
+            document.body.style.setProperty('--height', `${height}px`);
       
             this.drawToCanvasCallback();
             res();
@@ -253,7 +280,7 @@ class Picture {
 
     this.ctx = this.canvas.getContext('2d');
 
-    this.ctx.drawImage(this.img, 0, 0, this.size.width, this.size.height, 0, 0, this.size.width, this.size.height);
+    this.ctx.drawImage(this.img, 0, 0, this.size.width, this.size.height);
   }
 
   getImgPart = async (i, j, gridSize, element) => {
