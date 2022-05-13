@@ -17,37 +17,29 @@ class Params {
     return this._square;
   }
 
-  set square(value) {
-    this._square = value;
-  }
-
   get interval() {
     return this._interval;
-  }
-
-  set interval(value) {
-    this._interval = value;
   }
 
   constructor() {}
 
   setSquare = (square) => {
     if (square < this.minSquare) {
-      this.square = this.minSquare;
+      this._square = this.minSquare;
     } else if (square > this.maxSquare) {
-      this.square = this.maxSquare;
+      this._square = this.maxSquare;
     } else {
-      this.square = square;
+      this._square = square;
     }
   }
 
   setInterval = (interval) => {
     if (interval < this.minSquare) {
-      this.interval = this.minInterval;
+      this._interval = this.minInterval;
     } else if (interval > this.maxInterval) {
-      this.interval = this.maxInterval;
+      this._interval = this.maxInterval;
     } else {
-      this.interval = interval;
+      this._interval = interval;
     }
   }
 }
@@ -105,8 +97,6 @@ class Game {
     const moves = this.config[raw][col];
 
     this.currentPosition = moves[getRandomNumber(0, moves.length - 1)];
-
-    console.log('this.currentPosition', this.currentPosition);
 
     render(this.currentPosition);
   };
@@ -217,9 +207,17 @@ class Picture {
         const promise = new Promise((res) => {
           this.img.onload = () => {
             this.size = {
-              width: Math.min(this.img.width, this.img.height),
-              height: Math.min(this.img.width, this.img.height),
+              width: this.img.width,
+              height: this.img.height,
             };
+
+            const k = this.size.height / this.size.width;
+
+            const { offsetHeight, offsetWidth } = document.body;
+            const min = Math.min(offsetHeight, offsetWidth);
+
+            document.body.style.setProperty('--width', `${min}px`);
+            document.body.style.setProperty('--height', `${min * k}px`);
       
             this.drawToCanvasCallback();
             res();
@@ -277,7 +275,8 @@ class Picture {
 }
 
 
-document.body.style.setProperty('--size', `${Math.min(document.body.offsetWidth, document.body.offsetHeight)}px`);
+document.body.style.setProperty('--width', '0px');
+document.body.style.setProperty('--height', '0px');
 
 window.onload = () => {
   const wrapper = document.getElementById('wrapper');
