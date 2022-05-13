@@ -316,7 +316,6 @@ window.onload = () => {
   const inputGrid = document.getElementById('grid_input');
   const inputInterval = document.getElementById('interval_input');
   
-  const pictureController = new Picture();
   const uiController = new UI(wrapper);
   const paramsController = new Params();
   let gameController = new Game(paramsController.square, paramsController.interval);
@@ -341,6 +340,7 @@ window.onload = () => {
   };
 
   const rerender = () => {
+    const pictureController = new Picture();
     gameController.stop();
     gameController = new Game(paramsController.square, paramsController.interval);
     uiController.build(paramsController.square, pictureController.getImgPart);
