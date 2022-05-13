@@ -11,7 +11,7 @@ function getHeight(r, w) {
   return w / r;
 }
 
-export function getMaxAvailableSize(
+function getMaxAvailableSize(
   r,
   maxWidth,
   maxHeight,
