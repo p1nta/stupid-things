@@ -182,7 +182,7 @@ class Picture {
   ctx;
   img;
   size = {};
-  loading = new Promise((res) => res);
+  loading;
 
   constructor() {
     this.getConfig()
@@ -193,18 +193,17 @@ class Picture {
 
         this.img.crossOrigin = 'Anonymous';
 
-        this.loading = this.loading
-          .then((res) => {
-            this.img.onload = () => {
-              this.size = {
-                width: Math.min(this.img.width, this.img.height),
-                height: Math.min(this.img.width, this.img.height),
-              };
-        
-              this.drawToCanvasCallback();
-              res();
-            }
-          });
+        this.loading = new Promise((res) => {
+          this.img.onload = () => {
+            this.size = {
+              width: Math.min(this.img.width, this.img.height),
+              height: Math.min(this.img.width, this.img.height),
+            };
+      
+            this.drawToCanvasCallback();
+            res();
+          }
+        });
     
         this.img.src = url;
       });
@@ -231,26 +230,26 @@ class Picture {
     this.ctx.drawImage(this.img, 0, 0, this.size.width, this.size.height);
   }
 
-  getImgPart = (i, j, gridSize, element) => {
-    this.loading
-      .then(() => {
-        console.log('gg')
-        const xStep = Math.round(this.size.width / gridSize);
-        const yStep = Math.round(this.size.height / gridSize);
+  getImgPart = async (i, j, gridSize, element) => {
+    if (this.loading) {
+      await this.loading;
+        
+      const xStep = Math.round(this.size.width / gridSize);
+      const yStep = Math.round(this.size.height / gridSize);
 
-        const kx = xStep * j;
-        const ky = yStep * i;
+      const kx = xStep * j;
+      const ky = yStep * i;
 
-        const imageData = this.ctx.getImageData(kx, ky, xStep, yStep);
+      const imageData = this.ctx.getImageData(kx, ky, xStep, yStep);
 
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = imageData.width;
-        tempCanvas.height = imageData.height;
-        const tempCanvasCtx = tempCanvas.getContext('2d');
-        tempCanvasCtx.putImageData(imageData, 0, 0);
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = imageData.width;
+      tempCanvas.height = imageData.height;
+      const tempCanvasCtx = tempCanvas.getContext('2d');
+      tempCanvasCtx.putImageData(imageData, 0, 0);
 
-        element.style.backgroundImage = `url(${tempCanvas.toDataURL()})`;
-    });
+      element.style.backgroundImage = `url(${tempCanvas.toDataURL()})`;
+    }
   }
 }
 
