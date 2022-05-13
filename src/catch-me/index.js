@@ -245,8 +245,8 @@ class Picture {
             const { offsetHeight, offsetWidth } = document.body;
             const k = Math.min(this.size.height / offsetHeight, this.size.width / offsetWidth);
 
-            document.body.style.setProperty('--width', `${this.size.width * k}px`);
-            document.body.style.setProperty('--height', `${this.size.height * k}px`);
+            document.body.style.setProperty('--width', `${this.size.width / k}px`);
+            document.body.style.setProperty('--height', `${this.size.height / k}px`);
       
             this.drawToCanvasCallback();
             res();
