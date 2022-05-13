@@ -243,10 +243,10 @@ class Picture {
             };
 
             const { offsetHeight, offsetWidth } = document.body;
-            let k = Math.max(this.size.height / offsetHeight, this.size.width / offsetWidth);
+            let k = Math.max(this.size.height / (offsetHeight - 50), this.size.width / (offsetWidth - 50));
 
             if (k < 1) {
-              let k = Math.min(this.size.height / offsetHeight, this.size.width / offsetWidth);
+              let k = Math.min(this.size.height / (offsetHeight - 50), this.size.width / (offsetWidth - 50));
             }
 
             document.body.style.setProperty('--width', `${this.size.width / k}px`);
