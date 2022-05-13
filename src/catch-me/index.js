@@ -153,9 +153,13 @@
 
     catchPosition = () => {
       const pos = this.currentPosition.join('');
+      const index = this.visible.indexOf(pos);
 
-      if (!this.visible.includes(pos)) {
+      if (index < 0) {
         this.visible.push(pos);
+      } else {
+        this.visible.splice(index, 1);
+
       }
 
       if (this.visible.length === Math.pow(this.square, 2)) {
@@ -214,8 +218,7 @@
     };
 
     flip = (pos) => {
-      console.log(pos);
-      this.parentEl.childNodes[pos + 1].classList.add('flipped');
+      this.parentEl.childNodes[pos + 1].classList.toggle('flipped');
     }
   }
 
