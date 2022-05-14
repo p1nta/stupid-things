@@ -73,7 +73,6 @@ body {
 
 .app_wrapper {
   height: calc(100% - 50px);
-  font-size: 0;
 }
 
 @media screen and (max-width: 600px) {
