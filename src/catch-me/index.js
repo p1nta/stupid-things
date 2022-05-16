@@ -495,8 +495,8 @@
 
     getConfig() {
       if (!images) {
-        // return fetch('/catch-me/assets/images.json')
-        return fetch('./assets/images.json')
+        return fetch('/catch-me/assets/images.json')
+        // return fetch('./assets/images.json')
           .then((res) => res.json())
           .then((res) => {
             images = res;
