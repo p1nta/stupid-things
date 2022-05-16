@@ -73,6 +73,7 @@ body {
 
 .app_wrapper {
   height: calc(100% - 50px);
+  position: relative;
 }
 
 .app_wrapper[data-scrollable="true"] {
