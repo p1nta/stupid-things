@@ -75,6 +75,10 @@ body {
   height: calc(100% - 50px);
 }
 
+.app_wrapper[data-scrollable="true"] {
+  overflow: auto;
+}
+
 @media screen and (max-width: 600px) {
   .header_text_block {
     font-size: 0.9rem;
