@@ -170,7 +170,7 @@
     };
 
     getDistance = ([x, y]) => (
-      Math.sqrt(Math.pow(x - this.direction[0], 2) + Math.pow(y - this.direction[1],2))
+      Math.sqrt(Math.pow(x - this.direction[0], 2) + Math.pow(y - this.direction[1], 2))
     );
 
     getPositionByDirection = (render) => {
@@ -180,7 +180,7 @@
       const map = {};
 
       moves.forEach((coord) => map[coord.join('')] = this.getDistance(coord))
-      const sorted = moves.sort((a, b) => map[b] - map[a]);
+      const sorted = moves.sort((a, b) => map[b.join('')] - map[a.join('')]);
       const result = [];
 
       sorted.forEach((_el, index) => {
