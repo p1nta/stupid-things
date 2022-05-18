@@ -633,7 +633,7 @@
     drawToCanvasCallback = (url) => {
       this.img = new Image();
 
-      // this.img.crossOrigin = 'Anonymous';
+      this.img.crossOrigin = 'Anonymous';
       this.img.src = url;
 
       return new Promise((res) => {
