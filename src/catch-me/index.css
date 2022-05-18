@@ -6,7 +6,7 @@
   position: fixed;
   width: 100%;
   height: calc(100% - 110px);
-  top: 110px;
+  top: 50px;
   left: 0;
   overflow: auto;;
 }
@@ -59,6 +59,8 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 5px;
   background-color: white;
+  position: fixed;
+  bottom: 0;
 }
 
 .app_controls_block_item {
@@ -133,7 +135,7 @@
   position: fixed;
   width: 100%;
   height: calc(100% - 110px);
-  top: 110px;
+  top: 50px;
   left: 0;
   display: flex;
   justify-content: space-around;
@@ -218,10 +220,10 @@
   .app_config_block,
   .loading_block {
     height: calc(100% - 165px);
-    top: 165px;
+    top: 50px;
   }
 
   .content_wrapper {
-    height: calc(100% - 120px);
+    height: calc(100% - 115px);
   }
 }
