@@ -14,7 +14,7 @@
     static imageSources = {
       // girlsWithBooks: './assets/images.json',
       girlsWithBooks: '/catch-me/assets/images.json',
-      sfwWaifu: 'https://waifu.pics/api/sfw/waifu',
+      sfwWaifu: 'https://api.waifu.pics/sfw/waifu',
     }
 
     _changed = false;
