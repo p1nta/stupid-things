@@ -8,16 +8,15 @@
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
-  }
-
-  let images;
-
-  // // for local development
-  // let images = [
-  //   './assets/megumin.png'
-  // ];
+  };
 
   class Params {
+    static imageSources = {
+      // girlsWithBooks: './assets/images.json',
+      girlsWithBooks: '/catch-me/assets/images.json',
+      sfwWaifu: 'https://api.waifu.pics/sfw/waifu',
+    }
+
     _changed = false;
     _square = 2;
     minSquare = 2;
@@ -27,7 +26,9 @@
     minInterval = 200;
     maxInterval = 5000;
 
-    useDirection = false;
+    useDirection = true;
+
+    source = 'girlsWithBooks';
 
     get square() {
       return this._square;
@@ -73,6 +74,16 @@
 
     toggleDirection = () => {
       this.useDirection = !this.useDirection;
+      this._changed = true;
+    }
+
+    setSource = (source) => {
+      this.source = source;
+      this._changed = true;
+    }
+
+    getSourceUrl = () => {
+      return Params.imageSources[this.source];
     }
   }
 
@@ -84,7 +95,7 @@
     interval;
     position = [0, 0];
     visible = [];
-    complete = false;
+    isStarted = false;
     useDirection = false;
     direction = [];
     
@@ -96,15 +107,20 @@
       this.position = newPosition;
     }
 
-    constructor(square, interval, useDirection, highlightElement) {
-      this.init(square, interval, useDirection, highlightElement)
+    constructor(square, interval, useDirection) {
+      this.square = square;
+      this.useDirection = useDirection;
+      this.interval = interval;
     }
+
+    renderPosition = (position) => {
+      console.log(position);
+    }
+
+    onGameCompleted = () => {};
 
     getDirection = () => {
       if (this.useDirection) {
-        if (this.direction.length) {
-          this.highlightElement(this.direction[0] * this.square + this.direction[1]);
-        }
         const notVisible = []
         for (let i = 0; i < this.square; i += 1) {
           for (let j = 0; j < this.square; j += 1) {
@@ -117,20 +133,99 @@
         const randomNotVisibleIndex = getRandomNumber(0 , notVisible.length - 1);
 
         this.direction = notVisible[randomNotVisibleIndex];
-        this.highlightElement(this.direction[0] * this.square + this.direction[1]);
       }
     }
 
-    init(square, interval, useDirection, highlightElement) {
-      this.stop();
+
+    getDistance = ([x, y]) => (
+      Math.sqrt(Math.pow(x - this.direction[0], 2) + Math.pow(y - this.direction[1], 2))
+    );
+
+    getPosition = () => {
+      const raw = this.position[0];
+      const col = this.position[1];
+      const moves = this.config[raw][col];
+
+      this.currentPosition = moves[getRandomNumber(0, moves.length - 1)];
+
+      this.renderPosition(this.currentPosition);
+    };
+
+    getPositionByDirection = () => {
+      const raw = this.currentPosition[0];
+      const col = this.currentPosition[1];
+      const moves = this.config[raw][col];
+      const map = {};
+
+      moves.forEach((coord) => map[coord.join('')] = this.getDistance(coord))
+      const sorted = moves.sort((a, b) => map[b.join('')] - map[a.join('')]);
+      const result = [];
+
+      sorted.forEach((_el, index) => {
+        const arr = new Array(index + 1).fill(index);
+        result.push(...arr);
+      });
+
+      shuffleArray(result);
+
+      const index = result[getRandomNumber(0, result.length - 1)];
+
+
+      this.currentPosition = moves[index];
+
+      this.renderPosition(this.currentPosition);
+    };
+
+    restartDirectionInterval = () => {
+      if (this.directionChangeInterval) {
+        clearInterval(this.directionChangeInterval);
+        this.directionChangeInterval = 0;
+      }
+
+      this.directionChangeInterval = setInterval(
+        this.getDirection,
+        this.interval * this.square,
+      );
+
+      this.getDirection();
+    }
+
+    catchPosition = () => {
+      const pos = this.currentPosition.join('');
+      const index = this.visible.indexOf(pos);
+
+      if (index < 0) {
+        this.visible.push(pos);
+      } else {
+        this.visible.splice(index, 1);
+      }
+
+      if (this.visible.length === Math.pow(this.square, 2)) {
+        this.isStarted = false;
+        this.pause();
+        this.onGameCompleted();
+      } else if (
+        this.direction[0] === this.currentPosition[0]
+        && this.direction[1] === this.currentPosition[1]
+      ) {
+        this.restartDirectionInterval();
+      }
+    }
+
+
+    restart(
+      square = this.square,
+      interval = this.interval,
+      useDirection = this.useDirection,
+    ) {
+      this.pause();
+      this.isStarted = true;
       this.square = square;
-      this.highlightElement = highlightElement;
       this.useDirection = useDirection;
       this.interval = interval;
       this.config = [];
       this.position = [0, 0];
       this.visible = [];
-      this.complete = false;
 
       for (let i = 0; i < square; i += 1) {
         this.config.push([]);
@@ -157,79 +252,34 @@
           this.config[i].push(res);
         }
       }
+
+      this.continue();
     }
 
-    getPosition = (render) => {
-      const raw = this.position[0];
-      const col = this.position[1];
-      const moves = this.config[raw][col];
+    continue = () => {
+      this.pause();
+      let getPosition = this.getPosition;
 
-      this.currentPosition = moves[getRandomNumber(0, moves.length - 1)];
+      if (this.useDirection) {
+        getPosition = this.getPositionByDirection;
 
-      render(this.currentPosition);
-    };
-
-    getDistance = ([x, y]) => (
-      Math.sqrt(Math.pow(x - this.direction[0], 2) + Math.pow(y - this.direction[1], 2))
-    );
-
-    getPositionByDirection = (render) => {
-      const raw = this.currentPosition[0];
-      const col = this.currentPosition[1];
-      const moves = this.config[raw][col];
-      const map = {};
-
-      moves.forEach((coord) => map[coord.join('')] = this.getDistance(coord))
-      const sorted = moves.sort((a, b) => map[b.join('')] - map[a.join('')]);
-      const result = [];
-
-      sorted.forEach((_el, index) => {
-        const arr = new Array(index + 1).fill(index);
-        result.push(...arr);
-      });
-
-      shuffleArray(result);
-
-      console.table('=====================================');
-      console.table(sorted)
-      console.table(result.map(el => moves[el]))
-      console.table('=====================================');
-
-      const index = result[getRandomNumber(0, result.length - 1)];
-
-
-      this.currentPosition = moves[index];
-
-      render(this.currentPosition);
-    };
-
-    start = (render) => {
-      if (!this.timer) {
-        document.body.setAttribute('data-game-started', 'true');
-        let callback = this.getPosition;
-
-        if (this.useDirection) {
-          callback = this.getPositionByDirection;
-
-          this.directionChangeInterval = setInterval(
-            this.getDirection,
-            this.interval * this.square,
-          );
-        }
-
-        if (render) {
-          this.getDirection();
-          callback(render);
-        }
-
-        this.timer = setInterval(
-          () => callback(render),
-          this.interval,
+        this.directionChangeInterval = setInterval(
+          this.getDirection,
+          this.interval * this.square,
         );
+
+        this.getDirection();
       }
+
+      getPosition();
+
+      this.timer = setInterval(
+        () => getPosition(),
+        this.interval,
+      );
     };
 
-    stop = () => {
+    pause = () => {
       if (this.timer) {
         clearInterval(this.timer);
         this.timer = 0;
@@ -240,112 +290,167 @@
         this.directionChangeInterval = 0;
       }
     };
-
-    restartDirectionInterval = () => {
-      if (this.directionChangeInterval) {
-        clearInterval(this.directionChangeInterval);
-        this.directionChangeInterval = 0;
-      }
-
-      this.directionChangeInterval = setInterval(
-        this.getDirection,
-        this.interval * this.square,
-      );
-
-      this.getDirection();
-    }
-
-    toggleGame = (render) => {
-      if (this.timer) {
-        this.stop()
-      } else {
-        this.start(render);
-      }
-    }
-
-    catchPosition = () => {
-      const pos = this.currentPosition.join('');
-      const index = this.visible.indexOf(pos);
-
-      if (index < 0) {
-        this.visible.push(pos);
-      } else {
-        this.visible.splice(index, 1);
-      }
-
-      if (this.direction[0] === this.currentPosition[0] && this.direction[1] === this.currentPosition[1]) {
-        this.restartDirectionInterval();
-      }
-
-      if (this.visible.length === Math.pow(this.square, 2)) {
-        this.complete = true;
-        this.stop();
-      }
-    }
   }
 
   class UI {
     playBoard
     startButton
+    pauseButton
+    restartButton
+    settingButton
     inputGrid
     inputInterval
-    inputDirection;
+    inputDirection
+    configBoard
     catchButton;
 
-    constructor(
-      {
-        playBoard,
-        startButton,
-        inputGrid,
-        inputInterval,
-        inputDirection,
-      },
-      paramsController,
-    ) {
-      this.paramsController = paramsController;
-      this.playBoard = playBoard;
-      this.startButton = startButton;
-      this.inputGrid = inputGrid;
-      this.inputInterval = inputInterval;
-      this.inputDirection = inputDirection;
 
-      this.addListeners();
+    constructor(
+      square,
+      interval,
+      useDirection,
+      source,
+    ) {
+      document.body.style.setProperty('--width', '0px');
+      document.body.style.setProperty('--height', '0px');
+      document.body.style.setProperty('--interval', `${interval}ms`);
+      document.body.style.setProperty('--rows', square);
+      
+      this.playBoard = document.getElementById('play_board');
+      this.configBoard = document.getElementById('config_board');
+      this.loadingBoard = document.getElementById('loading_board');
+
+      this.startButton = document.getElementById('start');
+      this.pauseButton = document.getElementById('pause');
+      this.restartButton = document.getElementById('restart');
+      this.settingButton = document.getElementById('settings');
+
+      this.inputGrid = document.getElementById('grid_input');
+      if (this.inputGrid) {
+        this.inputGrid.value = square;
+      }
+      this.inputInterval = document.getElementById('interval_input');
+      if (this.inputInterval) {
+        this.inputInterval.value = interval;
+      }
+      this.inputDirection = document.getElementById('direction_input');
+      if (this.inputDirection) {
+        this.inputDirection.checked = useDirection;
+      }
+      this.inputSource = document.getElementById('source_input');
+      if (this.inputSource) {
+        this.inputSource.value = source;
+      }
+
+      this.catchButton = document.createElement('button');
+      this.catchButton.tabIndex = -1;
+      this.catchButton.classList.add('catch_button');
+      this.catchButton.innerText = 'Catch';
     }
 
-    enableConfigEditing = () => {
-      if (this.inputGrid) {
-        this.inputGrid.disabled = false;
-        this.inputGrid.classList.remove('m_disabled_input');
+    showSettings = () => {
+      this.configBoard.classList.add('m_visible');
+      this.catchButton.classList.add('m_hidden');
+      this.loadingBoard.classList.remove('m_visible');
+
+      if (this.startButton) {
+        this.startButton.classList.remove('m_disabled');
+        this.startButton.disabled = false;
       }
 
-      if (this.inputInterval) {
-        this.inputInterval.disabled = false;
-        this.inputInterval.classList.remove('m_disabled_input');
+      if (this.pauseButton) {
+        this.pauseButton.classList.add('m_disabled');
+        this.pauseButton.disabled = true;
       }
 
-      if (this.inputDirection) {
-        this.inputDirection.disabled = false;
-        this.inputDirection.classList.remove('m_disabled_input');
-      }
-    };
-
-    disableConfigEditing = () => {
-      if (this.inputGrid) {
-        this.inputGrid.classList.add('m_disabled_input');
-        this.inputGrid.disabled = true;
+      if (this.restartButton) {
+        this.restartButton.classList.remove('m_disabled');
+        this.restartButton.disabled = false;
       }
 
-      if (this.inputInterval) {
-        this.inputInterval.classList.add('m_disabled_input');
-        this.inputInterval.disabled = true;
+      if (this.settingButton) {
+        this.settingButton.classList.add('m_disabled');
+        this.settingButton.disabled = true;
+      }
+    }
+
+    showPause = () => {
+      this.configBoard.classList.remove('m_visible');
+      this.catchButton.classList.remove('m_hidden');
+      this.loadingBoard.classList.remove('m_visible');
+
+      if (this.startButton) {
+        this.startButton.classList.remove('m_disabled');
+        this.startButton.disabled = false;
       }
 
-
-      if (this.inputDirection) {
-        this.inputDirection.classList.add('m_disabled_input');
-        this.inputDirection.disabled = true;
+      if (this.pauseButton) {
+        this.pauseButton.classList.add('m_disabled');
+        this.pauseButton.disabled = true;
       }
-    };
+
+      if (this.restartButton) {
+        this.restartButton.classList.remove('m_disabled');
+        this.restartButton.disabled = false;
+      }
+
+      if (this.settingButton) {
+        this.settingButton.classList.remove('m_disabled');
+        this.settingButton.disabled = false;
+      }
+    }
+
+    showPlay = () => {
+      this.configBoard.classList.remove('m_visible');
+      this.catchButton.classList.remove('m_hidden');
+      this.loadingBoard.classList.remove('m_visible');
+
+      if (this.startButton) {
+        this.startButton.classList.add('m_disabled');
+        this.startButton.disabled = true;
+      }
+
+      if (this.pauseButton) {
+        this.pauseButton.classList.remove('m_disabled');
+        this.pauseButton.disabled = false;
+      }
+
+      if (this.restartButton) {
+        this.restartButton.classList.add('m_disabled');
+        this.restartButton.disabled = true;
+      }
+
+      if (this.settingButton) {
+        this.settingButton.classList.add('m_disabled');
+        this.settingButton.disabled = true;
+      }
+    }
+
+    showLoading = () => {
+      this.configBoard.classList.remove('m_visible');
+      this.catchButton.classList.remove('m_hidden');
+      this.loadingBoard.classList.add('m_visible');
+
+      if (this.startButton) {
+        this.startButton.classList.add('m_disabled');
+        this.startButton.disabled = true;
+      }
+
+      if (this.pauseButton) {
+        this.pauseButton.classList.add('m_disabled');
+        this.pauseButton.disabled = true;
+      }
+
+      if (this.restartButton) {
+        this.restartButton.classList.add('m_disabled');
+        this.restartButton.disabled = true;
+      }
+
+      if (this.settingButton) {
+        this.settingButton.classList.add('m_disabled');
+        this.settingButton.disabled = true;
+      }
+    }
 
     setInputGridValue = (value) => {
       if (this.inputGrid) {
@@ -359,15 +464,17 @@
       }
     }
 
-    addListeners = () => {
+    addListeners = (
+      startCallback,
+      pauseCallback,
+      restartCallback,
+      settingCallback,
+      catchCallback,
+    ) => {
       if (this.inputInterval) {
         this.inputInterval.onchange = (e) => {
-          this.startButton.innerText = 'Start';
-          this.playBoard.innerHTML = ''
-          document.body.setAttribute('data-game-started', 'false');
-
-          this.paramsController.setInterval(Number(e.target.value));
-          e.target.value = this.paramsController.interval;
+          const value = this.paramChanged('interval', Number(e.target.value));
+          e.target.value = value;
     
           document.body.style.setProperty('--interval', `${e.target.value}ms`);
         }
@@ -375,12 +482,8 @@
 
       if (this.inputGrid) {
         this.inputGrid.onchange = (e) => {
-          this.startButton.innerText = 'Start';
-          this.playBoard.innerHTML = ''
-          document.body.setAttribute('data-game-started', 'false');
-
-          this.paramsController.setSquare(Number(e.target.value));
-          e.target.value = this.paramsController.square;
+          const value = this.paramChanged('square', Number(e.target.value));
+          e.target.value = value;
 
           document.body.style.setProperty('--rows', e.target.value);
         }
@@ -388,23 +491,55 @@
 
       if (this.inputDirection) {
         this.inputDirection.onchange = () => {
-          this.startButton.innerText = 'Start';
-          this.playBoard.innerHTML = ''
-          document.body.setAttribute('data-game-started', 'false');
-
-          this.paramsController.toggleDirection();
+          this.paramChanged('direction');
         }
       }
+
+      if (this.inputSource) {
+        this.inputSource.onchange = (e) => {
+          this.paramChanged('source', e.target.value);
+        }
+      }
+
+      if (this.startButton) {
+        this.startButton.onclick = () => {
+          startCallback();
+        }
+      }
+
+      if (this.pauseButton) {
+        this.pauseButton.onclick = () => {
+          pauseCallback();
+        }
+      }
+
+      if (this.restartButton) {
+        this.restartButton.onclick = () => {
+          restartCallback();
+        }
+      }
+
+      if (this.settingButton) {
+        this.settingButton.onclick = () => {
+          settingCallback();
+        }
+      }
+
+      if (this.catchButton) {
+        this.catchButton.onclick = () => {
+          catchCallback();
+        }
+      }
+    }
+
+    paramChanged = (paramName, value) => {
+      console.log(paramName, value);
     }
 
     build = (square, getImageFunction) => {
       this.playBoard.innerHTML = '';
       this.playBoard.style.gridTemplateColumns = `repeat(${square}, 1fr)`;
 
-      this.catchButton = document.createElement('button');
-      this.catchButton.tabIndex = -1;
-      this.catchButton.classList.add('catch_button');
-      this.catchButton.innerText = 'Catch';
       this.playBoard.appendChild(this.catchButton);
 
       for (let i = 0; i < square; i += 1) {
@@ -417,209 +552,242 @@
           back.classList.add('flip_box_back');
           div.appendChild(front);
           div.appendChild(back);
-          if (getImageFunction) {
-            getImageFunction(i, j, square, back);
-          }
+
+          getImageFunction(i, j, square)
+            .then((bgUrl) => {
+              back.style.backgroundImage = `url(${bgUrl})`;
+            });
+
           this.playBoard.appendChild(div);
         }
       }
     };
 
     removeCatchButton = () => {
-      this.playBoard.removeChild(this.catchButton);
-
-      this.playBoard.childNodes.forEach((element) => {
+      for (let i = 1; i < this.playBoard.childNodes.length; i += 1) {
+        const element = this.playBoard.childNodes[i];
         element.classList.add('m_no_border');
-      });
+      }
+
+      this.playBoard.removeChild(this.catchButton);
     }
 
     tick = (pos) => {
-      this.catchButton.innerText = 'Catch';
       this.catchButton.style.transform = `translate(${100 * pos[1]}%, ${100 * pos[0]}%)`;
     };
 
     flip = (pos) => {
-      this.playBoard.childNodes[pos + 1].classList.toggle('m_flipped');
-    }
+      const element = this.playBoard.childNodes[pos + 1];
 
-    highlight = (pos) => {
-      this.playBoard.childNodes[pos + 1].classList.toggle('m_highlighted');
+      if (element) {
+        element.classList.toggle('m_flipped');
+      }
     }
   }
 
   class Picture {
-    canvas = document.createElement('canvas');
-    ctx;
     img;
-    size = {};
+    imageSize = {};
     loading;
+    width;
+    height
+    images;
 
     constructor(width, height) {
-      this.loading = this.getConfig()
-        .then(() => {
-          this.img = new Image();
-
-          const url = images[getRandomNumber(0, images.length - 1)];
-
-          this.img.crossOrigin = 'Anonymous';
-
-          const promise = new Promise((res) => {
-            this.img.onload = () => {
-              this.size = {
-                width: this.img.width,
-                height: this.img.height,
-              };
-
-              const h = height - 5;
-              const w = width - 10;
-
-              let k = Math.max(this.size.height / h, this.size.width / w);
-
-              if (k < 1) {
-                let k = Math.min(this.size.height / h, this.size.width / w);
-              }
-
-              document.body.style.setProperty('--width', `${this.size.width / k}px`);
-              document.body.style.setProperty('--height', `${this.size.height / k}px`);
-        
-              this.drawToCanvasCallback();
-              res();
-            }
-          });
-      
-          this.img.src = url;
-
-          return promise;
-        });
+      this.width = width - 10;
+      this.height = height - 5;
     }
 
-    getConfig() {
-      if (!images) {
-        return fetch('/catch-me/assets/images.json')
-        // return fetch('./assets/images.json')
-          .then((res) => res.json())
-          .then((res) => {
-            images = res;
-          });
+    loadPicture = (source) => {
+      this.loading = this.getUrl(source)
+        .then(this.drawToCanvasCallback)
+        .then(() => {
+          this.loading = null;
+        });
+
+      return this.loading;
+    };
+
+    getUrl(source) {
+      if (source === Params.imageSources.girlsWithBooks) {
+        if (!this.images) {
+          return fetch(source)
+            .then((res) => res.json())
+            .then((res) => {
+              this.images = res;
+              return res[getRandomNumber(0, res.length - 1)];
+            });
+        }
+
+        return Promise.resolve(this.images[getRandomNumber(0, this.images.length - 1)]);
       }
 
-      return Promise.resolve();
+      if (source === Params.imageSources.sfwWaifu) {
+        return fetch(source)
+          .then((res) => res.json())
+          .then((res) => res.url);
+      }
     }
 
-    drawToCanvasCallback() {
-      this.canvas.width = this.size.width;
-      this.canvas.height = this.size.height;
+    drawToCanvasCallback = (url) => {
+      this.img = new Image();
 
-      this.ctx = this.canvas.getContext('2d');
+      this.img.crossOrigin = 'Anonymous';
+      this.img.src = url;
 
-      this.ctx.drawImage(this.img, 0, 0, this.size.width, this.size.height);
+      return new Promise((res) => {
+        this.img.onload = () => {
+          this.imageSize = {
+            width: this.img.width,
+            height: this.img.height,
+          };
+
+          const k = Math.max(this.imageSize.height / this.height, this.imageSize.width / this.width);
+
+          document.body.style.setProperty('--width', `${this.imageSize.width / k}px`);
+          document.body.style.setProperty('--height', `${this.imageSize.height / k}px`);
+          res();
+        }
+      });
     }
 
-    getImgPart = async (i, j, gridSize, element) => {
+    getImgPartUrl = async (i, j, gridSize) => {
       if (this.loading) {
         await this.loading;
-          
-        const xStep = this.size.width / gridSize;
-        const yStep = this.size.height / gridSize;
-
-        const kx = xStep * j;
-        const ky = yStep * i;
-
-        const imageData = this.ctx.getImageData(kx, ky, xStep, yStep);
-
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = imageData.width;
-        tempCanvas.height = imageData.height;
-        const tempCanvasCtx = tempCanvas.getContext('2d');
-        tempCanvasCtx.putImageData(imageData, 0, 0);
-
-        element.style.backgroundImage = `url(${tempCanvas.toDataURL()})`;
       }
+          
+      const xStep = this.imageSize.width / gridSize;
+      const yStep = this.imageSize.height / gridSize;
+
+      const kx = xStep * j;
+      const ky = yStep * i;
+
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = xStep;
+      tempCanvas.height = yStep;
+      const tempCanvasCtx = tempCanvas.getContext('2d');
+      tempCanvasCtx.drawImage(this.img, kx, ky, xStep, yStep, 0, 0, xStep, yStep);
+
+      return tempCanvas.toDataURL();
     }
   }
 
+class Main {
+  gameController;
+  uiController;
+  pictureController;
+  paramsController;
 
-  document.body.style.setProperty('--width', '0px');
-  document.body.style.setProperty('--height', '0px');
-  document.body.style.setProperty('--interval', '1000ms');
+  constructor() {
+    this.paramsController = new Params();
 
-  window.onload = () => {
-    const paramsController = new Params();
-    const uiController = new UI(
-      {
-        playBoard: document.getElementById('play_board'),
-        startButton: document.getElementById('restart'),
-        inputGrid: document.getElementById('grid_input'),
-        inputInterval: document.getElementById('interval_input'),
-        inputDirection: document.getElementById('direction_input'),
-      },
-      paramsController,
+    this.uiController = new UI(
+      this.paramsController.square,
+      this.paramsController.interval,
+      this.paramsController.useDirection,
+      this.paramsController.source,
     );
-    const gameController = new Game(
-      paramsController.square,
-      paramsController.interval,
-      paramsController.useDirection,
-      uiController.highlight,
+    
+
+    this.gameController = new Game(
+      this.paramsController.square,
+      this.paramsController.interval,
+      this.paramsController.useDirection,
     );
 
-    uiController.setInputGridValue(paramsController.square);
-    uiController.setInputIntervalValue(paramsController.interval);
+    this.pictureController = new Picture(
+      this.uiController.playBoard.parentElement.clientWidth,
+      this.uiController.playBoard.parentElement.clientHeight,
+    );
+  }
 
-    function rerender(startGame) {
-      document.body.setAttribute('data-game-started', 'false')
-      document.body.style.setProperty('--width', '0px');
-      document.body.style.setProperty('--height', '0px');
+  init = () => {
+    this.uiController.paramChanged = this.paramChanged;
+    this.gameController.renderPosition = this.uiController.tick;
+    this.gameController.onGameCompleted = this.onGameCompleted;
 
-      const pictureController = new Picture(uiController.playBoard.parentElement.clientWidth, uiController.playBoard.parentElement.clientHeight);
+    this.uiController.addListeners(
+      this.startGame,
+      this.pauseGame,
+      this.restartGame,
+      this.settingsClick,
+      this.catchTile,
+    );
+  };
 
-      gameController.stop();
-      gameController.init(paramsController.square, paramsController.interval, paramsController.useDirection, uiController.highlight);
-      paramsController.makeActual();
-
-      const catchPosition = () => {
-        gameController.catchPosition();
-        uiController.flip(gameController.currentPosition[0] * paramsController.square + gameController.currentPosition[1]);
-
-        if (gameController.complete) {
-          uiController.removeCatchButton();
-          uiController.enableConfigEditing();
-          uiController.startButton.innerText = 'Restart';
-          uiController.startButton.onclick = () =>  rerender(true);
-        }
+  paramChanged = (paramName, value) => {
+    switch (paramName) {
+      case 'square': {
+        this.paramsController.setSquare(value);
+        return this.paramsController.square;
       }
 
+      case 'interval': {
+        this.paramsController.setInterval(value);
+        return this.paramsController.interval;
+      }
 
-      if (startGame) {
-        uiController.build(paramsController.square, pictureController.getImgPart);
-        uiController.disableConfigEditing();
-        gameController.start(uiController.tick);
-        uiController.catchButton.onclick = catchPosition;
+      case 'direction': {
+        return this.paramsController.toggleDirection();
+      }
 
-        const callback = () => {
-          if (!paramsController.changed) {
-            gameController.toggleGame(uiController.tick);
-            
-            if (gameController.timer) {
-              uiController.startButton.innerText = 'Pause';
-              uiController.catchButton.style.visibility = 'visible'
-              uiController.catchButton.onclick = catchPosition;
-              uiController.disableConfigEditing();
-            } else {
-              uiController.startButton.innerText = 'Continue';
-              uiController.catchButton.style.visibility = 'hidden'
-              uiController.catchButton.onclick = null;
-              uiController.enableConfigEditing();
-            }
-          } else {
-            rerender(true);
-          }
-        }
-
-        uiController.startButton.innerText = 'Pause';
-        uiController.startButton.onclick = callback;
+      case 'source': {
+        return this.paramsController.setSource(value);
       }
     }
+  };
 
-    uiController.startButton.onclick = () =>  rerender(true);
+  startGame = () => {
+    if (this.gameController.isStarted && !this.paramsController.changed) {
+      this.uiController.showPlay();
+      this.gameController.continue();
+    } else {
+      this.restartGame();
+    }
+  };
+
+  restartGame = () => {
+    this.paramsController.makeActual();
+    this.uiController.showPlay();
+
+    this.uiController.showLoading();
+    this.pictureController.loadPicture(this.paramsController.getSourceUrl())
+      .then(() => this.uiController.build(this.paramsController.square, this.pictureController.getImgPartUrl))
+      .then(() => this.gameController.restart(
+        this.paramsController.square,
+        this.paramsController.interval,
+        this.paramsController.useDirection,
+      ))
+      .then(() => this.uiController.showPlay());
+  };
+
+  pauseGame = () => {
+    this.uiController.showPause();
+    this.gameController.pause();
+  };
+
+  settingsClick = () => {
+    this.uiController.showSettings();
+
+    if (this.gameController.isStarted) {
+      this.gameController.pause();
+    }
+  };
+
+  catchTile = () => {
+    this.uiController.flip(this.gameController.currentPosition[0] * this.paramsController.square + this.gameController.currentPosition[1]);
+    this.gameController.catchPosition();
+  };
+
+  onGameCompleted = () => {
+    this.uiController.showPause();
+    this.uiController.removeCatchButton();
+  }
+}
+
+  window.onload = () => {
+    const main = new Main();
+
+    main.init();
   }
 })();

@@ -1,16 +1,36 @@
 .app_config_block {
-  height: 60px;
-  padding: 5px;
-  text-align: center;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-column-gap: 5px;
+  z-index: 3;
+  padding: 0 5px 5px;
+  background-color: white;
+  visibility: hidden;
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 110px);
+  top: 110px;
+  left: 0;
+  overflow: auto;;
 }
 
 .app_config_block_item {
   width: 100%;
-  line-height: 25px;
-  text-align: left;
+  max-width: 600px;
+  margin: 0 auto 10px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid rgba(150, 50, 150, .5);
+  border-radius: 5px;
+  background-color: rgba(150, 50, 150, .5);
+}
+
+.app_config_block_item_input_wrapper {
+  width: 100%;
+}
+
+.app_config_block_input_title {
+  font-size: 2rem;
+  width: 100%;
 }
 
 .app_config_block_item_input {
@@ -18,20 +38,46 @@
   width: 100%;
   padding: 0 4px;
   height: 25px;
-  border: 1px solid rgba(150, 50, 150, .5);
   border-radius: 5px;
+  margin-top: 15px;
+  border: 1px solid rgba(190, 50, 150, .5);
 }
 
-.app_config_block_item_button {
+.app_controls_block {
+  max-width: 1400px;
+  height: 60px;
+  padding: 5px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 5px;
+  background-color: white;
+}
+
+.app_controls_block_item {
+  width: 100%;
+  height: 50px;
+  line-height: 25px;
+  text-align: left;
+}
+
+.app_controls_block_item_button {
+  padding: 5px;
   font-size: 1.5rem;
   width: 100%;
   height: 100%;
   border-radius: 5px;
   background-color: rgba(150, 50, 150, .5);
+  border: 1px solid rgba(190, 50, 150, .5);
   cursor: pointer;
 }
 
+.controls_icon {
+  height: 100%;
+}
+
 .content_wrapper {
+  max-width: 1400px;
   position: relative;
   width: 100%;
   height: calc(100% - 60px);
@@ -71,19 +117,26 @@
   font-size: 1rem;
 }
 
-.loader {
-  visibility: visible;
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: linearGradient(to right, red, blue);
+.loading_block {
+  z-index: 4;
+  padding: 5px;
+  background-color: white;
+  visibility: hidden;
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 110px);
+  top: 110px;
+  left: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
-[data-game-started="true"] .loader {
-  visibility: hidden;
+.loading_icon {
+  width: 50px;
+  margin-bottom: 10px;
 }
+
 
 /* titles styles */
 
@@ -125,9 +178,10 @@
   transform: rotateY(180deg);
 }
 
-.m_disabled_input {
+.m_disabled {
   border: 1px solid rgba(150, 150, 150, .5);
-  color: rgba(150, 150, 150, .5);
+  background-color: rgba(150, 150, 150, .5);
+  color: rgba(90, 90, 90, 1);
   pointer-events: none;
 }
 
@@ -139,14 +193,24 @@
   width: 25px;
 }
 
-.m_highlighted {
-  background-color: rgba(190, 50, 150, .5);
+.m_visible {
+  visibility: visible;
+}
+
+.m_hidden {
+  visibility: none;
 }
 
 @media screen and (max-width: 600px) {
-  .app_config_block {
+  .app_controls_block {
     grid-template-columns: 1fr 1fr;
-    height: 120px;
+    height: 115px;
+  }
+
+  .app_config_block,
+  .loading_block {
+    height: calc(100% - 165px);
+    top: 165px;
   }
 
   .content_wrapper {
