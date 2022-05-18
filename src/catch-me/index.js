@@ -632,7 +632,7 @@
     }
 
     drawToCanvasCallback = (url) => {
-      const img = new Image();
+      this.img = new Image();
 
       this.img.crossOrigin = 'Anonymous'; // if set to 'anonymous' it will not work with "waifu"
       this.img.src = url;
