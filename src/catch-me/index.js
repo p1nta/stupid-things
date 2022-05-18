@@ -626,15 +626,15 @@
 
       if (source === Params.imageSources.sfwWaifu) {
         return fetch(source)
-          .then((res) => res.json())
-          .then((res) => res.url);
+          .then((res) => res.blob())
+          .then((res) => URL.createObjectURL(res));
       }
     }
 
     drawToCanvasCallback = (url) => {
       const img = new Image();
 
-      // this.img.crossOrigin = 'Anonymous'; // if set to 'anonymous' it will not work with "waifu"
+      this.img.crossOrigin = 'Anonymous'; // if set to 'anonymous' it will not work with "waifu"
       this.img.src = url;
 
       return new Promise((res) => {
