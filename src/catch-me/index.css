@@ -211,18 +211,13 @@
 }
 
 @media screen and (max-width: 600px) {
-  .app_controls_block {
-    grid-template-columns: 1fr 1fr;
-    height: 115px;
-  }
-
   .app_config_block,
   .loading_block {
-    height: calc(100% - 165px);
+    height: calc(100% - 110px);
     top: 50px;
   }
 
   .content_wrapper {
-    height: calc(100% - 115px);
+    height: calc(100% - 60px);
   }
 }
