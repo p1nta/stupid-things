@@ -96,7 +96,7 @@
   align-items: center;
   justify-content: space-around;
   box-sizing: border-box;
-  padding: 0 5px 5px;
+  padding: 5px;
 }
 
 .play_board {

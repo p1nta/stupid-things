@@ -620,7 +620,7 @@
 
     constructor(width, height) {
       this.width = width - 10;
-      this.height = height - 5;
+      this.height = height - 10;
     }
 
     loadPicture = (source) => {
