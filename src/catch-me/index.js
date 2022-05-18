@@ -634,7 +634,7 @@
     drawToCanvasCallback = (url) => {
       this.img = new Image();
 
-      // this.img.crossOrigin = 'Anonymous';
+      // this.img.crossOrigin = 'Anonymous'; // if set to 'anonymous' it will not work with "waifu"
       this.img.src = url;
 
       return new Promise((res) => {
@@ -647,6 +647,8 @@
           this.canvas.width = this.img.width;
           this.canvas.height = this.img.height;
           this.ctx = this.canvas.getContext('2d');
+
+          this.ctx.drawImage(this.img, 0, 0);
 
           const k = Math.max(this.imageSize.height / this.height, this.imageSize.width / this.width);
 
