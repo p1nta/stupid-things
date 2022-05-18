@@ -14,7 +14,7 @@
     static imageSources = {
       // girlsWithBooks: './assets/images.json',
       girlsWithBooks: '/catch-me/assets/images.json',
-      sfwWaifu: 'https://api.waifu.pics/sfw/waifu',
+      sfwWaifu: 'https://waifu.pics/api/sfw/waifu',
     }
 
     _changed = false;
@@ -632,7 +632,7 @@
     }
 
     drawToCanvasCallback = (url) => {
-      this.img = new Image();
+      const img = new Image();
 
       // this.img.crossOrigin = 'Anonymous'; // if set to 'anonymous' it will not work with "waifu"
       this.img.src = url;
