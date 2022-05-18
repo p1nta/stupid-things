@@ -57,6 +57,9 @@
         </div>
       </div>
       <div class="app_config_block m_visible" id="config_board">
+        <h3>
+          Settings
+        </h3>
         <label class="app_config_block_item" for="grid_input">
           <div class="app_config_block_item_input_wrapper">
             <p class="app_config_block_input_title">
@@ -103,34 +106,35 @@
         <label class="app_config_block_item" for="source_input">
           <div class="app_config_block_item_input_wrapper">
             <p class="app_config_block_input_title">
-              Select type of image
+              Select category of image
             </p>
-            <select
+            <input
               id="source_input"
-              type="select"
+              list="images_categories"
               class="app_config_block_item_input"
-            >
-              <option selected value="girlsWithBooks">Anime Girls With Programming Books</option>
-              <option value="sfwWaifu">Anime Waifu</option>
-              <option value="sfwNeko">Anime Girls Neko</option>
-              <option value="sfwShinobu">Anime Girls Shinobu</option>
-              <option value="sfwBully">Anime Girls Bully</option>
-              <option value="sfwCry">Anime Girls Cry</option>
-              <option value="sfwHug">Anime Girls Hug</option>
-              <option value="sfwKiss">Anime Girls Kiss</option>
-              <option value="sfwLick">Anime Girls Lick</option>
-              <option value="sfwPat">Anime Girls Pat</option>
-              <option value="sfwSmug">Anime Girls Smug</option>
-              <option value="sfwHighfive">Anime Girls Highfive</option>
-              <option value="sfwNom">Anime Girls Nom</option>
-              <option value="sfwBite">Anime Girls Bite</option>
-              <option value="sfwSlap">Anime Girls Slap</option>
-              <option value="sfwWink">Anime Girls Wink</option>
-              <option value="sfwPoke">Anime Girls Poke</option>
-              <option value="sfwDance">Anime Girls Dance</option>
-              <option value="sfwCringe">Anime Girls Cringe</option>
-              <option value="sfwBlush">Anime Girls Blush</option>
-            </select>
+            />
+            <datalist id="images_categories">
+              <option value="Anime Girls With Programming Books">
+              <option value="Anime Girls Waifu">
+              <option value="Anime Girls Neko">
+              <option value="Anime Girls Shinobu">
+              <option value="Anime Girls Bully">
+              <option value="Anime Girls Cry">
+              <option value="Anime Girls Hug">
+              <option value="Anime Girls Kiss">
+              <option value="Anime Girls Lick">
+              <option value="Anime Girls Pat">
+              <option value="Anime Girls Smug">
+              <option value="Anime Girls Highfive">
+              <option value="Anime Girls Nom">
+              <option value="Anime Girls Bite">
+              <option value="Anime Girls Slap">
+              <option value="Anime Girls Wink">
+              <option value="Anime Girls Poke">
+              <option value="Anime Girls Dance">
+              <option value="Anime Girls Cringe">
+              <option value="Anime Girls Blush">
+            </datalist>
           </div>
         </label>
       </div>
