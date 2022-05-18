@@ -610,7 +610,6 @@
   }
 
   class Picture {
-    img;
     canvas = document.createElement('canvas');
     ctx;
     imageSize = {};
@@ -647,28 +646,28 @@
 
         return Promise.resolve(this.images[getRandomNumber(0, this.images.length - 1)]);
       } else {
-        return Promise.resolve(source)
+        return Promise.resolve(`${source}?${Date.now()}`);
       }
     }
 
     drawToCanvasCallback = (url) => {
-      this.img = new Image();
+      const img = new Image();
 
-      this.img.crossOrigin = 'Anonymous';
-      this.img.src = url;
+      img.crossOrigin = 'Anonymous';
+      img.src = url;
 
       return new Promise((res) => {
         this.img.onload = () => {
           this.imageSize = {
-            width: this.img.width,
-            height: this.img.height,
+            width: img.width,
+            height: img.height,
           };
 
-          this.canvas.width = this.img.width;
-          this.canvas.height = this.img.height;
+          this.canvas.width = img.width;
+          this.canvas.height = img.height;
           this.ctx = this.canvas.getContext('2d');
 
-          this.ctx.drawImage(this.img, 0, 0);
+          this.ctx.drawImage(img, 0, 0);
 
           const k = Math.max(this.imageSize.height / this.height, this.imageSize.width / this.width);
 
