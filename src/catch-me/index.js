@@ -657,7 +657,7 @@
       img.src = url;
 
       return new Promise((res) => {
-        this.img.onload = () => {
+        img.onload = () => {
           this.imageSize = {
             width: img.width,
             height: img.height,
