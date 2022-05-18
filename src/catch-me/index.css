@@ -11,6 +11,12 @@
   overflow: auto;;
 }
 
+.app_config_block_title {
+  font-size: 2rem;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
 .app_config_block_item {
   width: 100%;
   max-width: 600px;

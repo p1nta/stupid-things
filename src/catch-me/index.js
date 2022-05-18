@@ -635,7 +635,7 @@
     };
 
     getUrl(source) {
-      if (source === Params.imageSources.girlsWithBooks) {
+      if (source === Params.imageSources['Anime Girls With Programming Books']) {
         if (!this.images) {
           return fetch(source)
             .then((res) => res.json())
@@ -646,9 +646,7 @@
         }
 
         return Promise.resolve(this.images[getRandomNumber(0, this.images.length - 1)]);
-      }
-
-      if (source === Params.imageSources.sfwWaifu) {
+      } else {
         return Promise.resolve(source)
       }
     }
