@@ -644,6 +644,8 @@
             height: this.img.height,
           };
 
+          this.img.crossOrigin = 'Anonymous';
+
           this.canvas.width = this.img.width;
           this.canvas.height = this.img.height;
           this.ctx = this.canvas.getContext('2d');
