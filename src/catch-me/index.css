@@ -45,6 +45,7 @@
 
 .app_controls_block {
   max-width: 1400px;
+  margin: 0 auto;
   height: 60px;
   padding: 5px;
   text-align: center;
@@ -78,6 +79,7 @@
 
 .content_wrapper {
   max-width: 1400px;
+  margin: 0 auto;
   position: relative;
   width: 100%;
   height: calc(100% - 60px);

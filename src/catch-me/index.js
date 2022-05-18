@@ -587,6 +587,7 @@
 
   class Picture {
     img;
+    canvas = document.createElement('canvas');
     imageSize = {};
     loading;
     width;
@@ -642,6 +643,12 @@
             height: this.img.height,
           };
 
+          this.canvas.width = this.img.width;
+          this.canvas.height = this.img.height;
+          const ctx = this.canvas.getContext('2d');
+
+          ctx.drawImage(this.img, 0, 0);
+
           const k = Math.max(this.imageSize.height / this.height, this.imageSize.width / this.width);
 
           document.body.style.setProperty('--width', `${this.imageSize.width / k}px`);
@@ -666,7 +673,7 @@
       tempCanvas.width = xStep;
       tempCanvas.height = yStep;
       const tempCanvasCtx = tempCanvas.getContext('2d');
-      tempCanvasCtx.drawImage(this.img, kx, ky, xStep, yStep, 0, 0, xStep, yStep);
+      tempCanvasCtx.drawImage(this.canvas, kx, ky, xStep, yStep, 0, 0, xStep, yStep);
 
       return tempCanvas.toDataURL();
     }
