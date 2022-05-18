@@ -653,7 +653,7 @@
             .then((res) => res.json())
             .then((res) => {
               this.AIFaces = res;
-              res[getRandomNumber(0, res.length - 1)]
+              return res[getRandomNumber(0, res.length - 1)]
             });
         }
 
