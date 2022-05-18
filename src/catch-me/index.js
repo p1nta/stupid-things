@@ -15,6 +15,25 @@
       // girlsWithBooks: './assets/images.json',
       girlsWithBooks: '/catch-me/assets/images.json',
       sfwWaifu: 'https://waifu.vercel.app/sfw/waifu',
+      sfwNeko: 'https://waifu.vercel.app/sfw/neko',
+      sfwShinobu: 'https://waifu.vercel.app/sfw/shinobu',
+      sfwBully: 'https://waifu.vercel.app/sfw/bully',
+      sfwCry: 'https://waifu.vercel.app/sfw/cry',
+      sfwHug: 'https://waifu.vercel.app/sfw/hug',
+      sfwKiss: 'https://waifu.vercel.app/sfw/kiss',
+      sfwLick: 'https://waifu.vercel.app/sfw/lick',
+      sfwPat: 'https://waifu.vercel.app/sfw/pat',
+      sfwSmug: 'https://waifu.vercel.app/sfw/smug',
+      sfwHighfive: 'https://waifu.vercel.app/sfw/highfive',
+      sfwNom: 'https://waifu.vercel.app/sfw/nom',
+      sfwBite: 'https://waifu.vercel.app/sfw/bite',
+      sfwSlap: 'https://waifu.vercel.app/sfw/slap',
+      sfwWink: 'https://waifu.vercel.app/sfw/wink',
+      sfwPoke: 'https://waifu.vercel.app/sfw/poke',
+      sfwDance: 'https://waifu.vercel.app/sfw/dance',
+      sfwCringe: 'https://waifu.vercel.app/sfw/cringe',
+      sfwBlush: 'https://waifu.vercel.app/sfw/blush',
+
     }
 
     _changed = false;
