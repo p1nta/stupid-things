@@ -588,6 +588,7 @@
   class Picture {
     img;
     canvas = document.createElement('canvas');
+    ctx;
     imageSize = {};
     loading;
     width;
@@ -631,35 +632,29 @@
     }
 
     drawToCanvasCallback = (url) => {
-      return fetch(url)
-        .then((res) => res.blob())
-        .then((imageBlob) => {
-          const imageObjectURL = URL.createObjectURL(imageBlob);
-          this.img = new Image();
+      this.img = new Image();
 
-          this.img.src = imageObjectURL;
+      this.img.crossOrigin = 'Anonymous';
+      this.img.src = url;
 
-          return new Promise((res) => {
-            this.img.onload = () => {
-              this.imageSize = {
-                width: this.img.width,
-                height: this.img.height,
-              };
-    
-              this.canvas.width = this.img.width;
-              this.canvas.height = this.img.height;
-              const ctx = this.canvas.getContext('2d');
-    
-              ctx.drawImage(this.img, 0, 0);
-    
-              const k = Math.max(this.imageSize.height / this.height, this.imageSize.width / this.width);
-    
-              document.body.style.setProperty('--width', `${this.imageSize.width / k}px`);
-              document.body.style.setProperty('--height', `${this.imageSize.height / k}px`);
-              res();
-            }
-          });
-        })
+      return new Promise((res) => {
+        this.img.onload = () => {
+          this.imageSize = {
+            width: this.img.width,
+            height: this.img.height,
+          };
+
+          this.canvas.width = this.img.width;
+          this.canvas.height = this.img.height;
+          this.ctx = this.canvas.getContext('2d');
+
+          const k = Math.max(this.imageSize.height / this.height, this.imageSize.width / this.width);
+
+          document.body.style.setProperty('--width', `${this.imageSize.width / k}px`);
+          document.body.style.setProperty('--height', `${this.imageSize.height / k}px`);
+          res();
+        }
+      });
     }
 
     getImgPartUrl = async (i, j, gridSize) => {
@@ -677,7 +672,8 @@
       tempCanvas.width = xStep;
       tempCanvas.height = yStep;
       const tempCanvasCtx = tempCanvas.getContext('2d');
-      tempCanvasCtx.drawImage(this.canvas, kx, ky, xStep, yStep, 0, 0, xStep, yStep);
+      const data = this.ctx.getImageData(kx, ky, kx + xStep, ky + yStep);
+      tempCanvasCtx.putImageData(data, 0, 0);
 
       return tempCanvas.toDataURL();
     }
