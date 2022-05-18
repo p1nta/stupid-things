@@ -787,7 +787,8 @@ class Main {
         this.paramsController.interval,
         this.paramsController.useDirection,
       ))
-      .then(() => this.uiController.showPlay());
+      .then(() => this.uiController.showPlay())
+      .catch(() => this.uiController.showSettings());
   };
 
   pauseGame = () => {
