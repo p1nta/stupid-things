@@ -1,29 +1,21 @@
 .content {
-  max-width: 1400px;
+  max-width: 600px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 5px;
   padding: 5px;
 }
 
 .link {
-  aspect-ratio: 1;
   border-radius: 5px;
   background-color: rgba(150, 50, 150, .5);
   text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color:rgba(100, 50, 150, .8);
   font-size: 3rem;
-  text-align: center;
-  padding: 5px;
+  padding: 20px 20px 50px;
   font-weight: 600;
 }
 
 @media screen and (max-width: 835px) {
   .link {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 }
