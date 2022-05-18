@@ -15,6 +15,7 @@
       // 'girlsWithBooks': './assets/animeGirlsHoldingProgrammingBooks.json',
       girlsWithBooks: '/catch-me/assets/animeGirlsHoldingProgrammingBooks.json',
       generatedGirls: '/catch-me/assets/AIFaces.json',
+      thisWaifuDoesNotExist: () => `https://www.thiswaifudoesnotexist.net/example-${getRandomNumber(0, 10000)}.jpg`,
       sfwWaifu: 'https://waifu.vercel.app/sfw/waifu',
       sfwNeko: 'https://waifu.vercel.app/sfw/neko',
       sfwShinobu: 'https://waifu.vercel.app/sfw/shinobu',
@@ -647,7 +648,9 @@
         }
 
         return Promise.resolve(this.animeGirlsHoldingProgrammingBooks[getRandomNumber(0, this.animeGirlsHoldingProgrammingBooks.length - 1)]);
-      } else if (source === Params.imageSources.generatedGirls) {
+      }
+      
+      if (source === Params.imageSources.generatedGirls) {
         if (!this.AIFaces) {
           return fetch(source)
             .then((res) => res.json())
@@ -658,9 +661,13 @@
         }
 
         return Promise.resolve(this.AIFaces[getRandomNumber(0, this.AIFaces.length - 1)]);
-      } else {
-        return Promise.resolve(`${source}?${Date.now()}`);
       }
+      
+      if (source === Params.imageSources.thisWaifuDoesNotExist) {
+        return Promise.resolve(source());
+      }
+
+      return Promise.resolve(`${source}?${Date.now()}`);
     }
 
     drawToCanvasCallback = (url) => {
