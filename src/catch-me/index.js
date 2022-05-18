@@ -12,27 +12,27 @@
 
   class Params {
     static imageSources = {
-      // 'Anime Girls With Programming Books': './assets/images.json',
-      'Anime Girls With Programming Books': '/catch-me/assets/images.json',
-      'Anime Girls Waifu': 'https://waifu.vercel.app/sfw/waifu',
-      'Anime Girls Neko': 'https://waifu.vercel.app/sfw/neko',
-      'Anime Girls Shinobu': 'https://waifu.vercel.app/sfw/shinobu',
-      'Anime Girls Bully': 'https://waifu.vercel.app/sfw/bully',
-      'Anime Girls Cry': 'https://waifu.vercel.app/sfw/cry',
-      'Anime Girls Hug': 'https://waifu.vercel.app/sfw/hug',
-      'Anime Girls Kiss': 'https://waifu.vercel.app/sfw/kiss',
-      'Anime Girls Lick': 'https://waifu.vercel.app/sfw/lick',
-      'Anime Girls Pat': 'https://waifu.vercel.app/sfw/pat',
-      'Anime Girls Smug': 'https://waifu.vercel.app/sfw/smug',
-      'Anime Girls Highfive': 'https://waifu.vercel.app/sfw/highfive',
-      'Anime Girls Nom': 'https://waifu.vercel.app/sfw/nom',
-      'Anime Girls Bite': 'https://waifu.vercel.app/sfw/bite',
-      'Anime Girls Slap': 'https://waifu.vercel.app/sfw/slap',
-      'Anime Girls Wink': 'https://waifu.vercel.app/sfw/wink',
-      'Anime Girls Poke': 'https://waifu.vercel.app/sfw/poke',
-      'Anime Girls Dance': 'https://waifu.vercel.app/sfw/dance',
-      'Anime Girls Cringe': 'https://waifu.vercel.app/sfw/cringe',
-      'Anime Girls Blush': 'https://waifu.vercel.app/sfw/blush',
+      // 'girlsWithBooks': './assets/images.json',
+      girlsWithBooks: '/catch-me/assets/images.json',
+      sfwWaifu: 'https://waifu.vercel.app/sfw/waifu',
+      sfwNeko: 'https://waifu.vercel.app/sfw/neko',
+      sfwShinobu: 'https://waifu.vercel.app/sfw/shinobu',
+      sfwBully: 'https://waifu.vercel.app/sfw/bully',
+      sfwCry: 'https://waifu.vercel.app/sfw/cry',
+      sfwHug: 'https://waifu.vercel.app/sfw/hug',
+      sfwKiss: 'https://waifu.vercel.app/sfw/kiss',
+      sfwLick: 'https://waifu.vercel.app/sfw/lick',
+      sfwPat: 'https://waifu.vercel.app/sfw/pat',
+      sfwSmug: 'https://waifu.vercel.app/sfw/smug',
+      sfwHighfive: 'https://waifu.vercel.app/sfw/highfive',
+      sfwNom: 'https://waifu.vercel.app/sfw/nom',
+      sfwBite: 'https://waifu.vercel.app/sfw/bite',
+      sfwSlap: 'https://waifu.vercel.app/sfw/slap',
+      sfwWink: 'https://waifu.vercel.app/sfw/wink',
+      sfwPoke: 'https://waifu.vercel.app/sfw/poke',
+      sfwDance: 'https://waifu.vercel.app/sfw/dance',
+      sfwCringe: 'https://waifu.vercel.app/sfw/cringe',
+      sfwBlush: 'https://waifu.vercel.app/sfw/blush',
     }
 
     _changed = false;
@@ -46,7 +46,7 @@
 
     useDirection = true;
 
-    source = 'Anime Girls With Programming Books';
+    source = 'girlsWithBooks';
 
     get square() {
       return this._square;
@@ -635,7 +635,7 @@
     };
 
     getUrl(source) {
-      if (source === Params.imageSources['Anime Girls With Programming Books']) {
+      if (source === Params.imageSources.girlsWithBooks) {
         if (!this.images) {
           return fetch(source)
             .then((res) => res.json())
