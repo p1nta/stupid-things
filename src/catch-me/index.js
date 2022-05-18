@@ -625,16 +625,17 @@
       }
 
       if (source === Params.imageSources.sfwWaifu) {
-        return fetch(source)
-          .then((res) => res.blob())
-          .then((res) => URL.createObjectURL(res));
+        // return fetch(source)
+        //   .then((res) => res.blob())
+        //   .then((res) => URL.createObjectURL(res));
+        return Promise.resolve(source)
       }
     }
 
     drawToCanvasCallback = (url) => {
       this.img = new Image();
 
-      this.img.crossOrigin = 'Anonymous'; // if set to 'anonymous' it will not work with "waifu"
+      this.img.crossOrigin = 'Anonymous';
       this.img.src = url;
 
       return new Promise((res) => {
@@ -643,8 +644,6 @@
             width: this.img.width,
             height: this.img.height,
           };
-
-          this.img.crossOrigin = 'Anonymous';
 
           this.canvas.width = this.img.width;
           this.canvas.height = this.img.height;
