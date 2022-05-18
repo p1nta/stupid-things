@@ -16,14 +16,14 @@ function ThroughDirectory(Directory) {
       if (fs.statSync(Absolute).isDirectory() && !Absolute.includes('.git')) {
         return ThroughDirectory(Absolute);
       } else if (ext.some((el) => File.includes(el))) {
-        const res = Absolute.split('/Anime-Girls-Holding-Programming-Books/')[1];
-        names.push(`https://raw.githubusercontent.com/cat-milk/Anime-Girls-Holding-Programming-Books/master/${res}`);
+        const res = Absolute.split('/2500girls/')[1];
+        names.push(`https://raw.githubusercontent.com/simmmis/2500girls/master/${res}`);
       } 
   });
 }
 
-ThroughDirectory('../Anime-Girls-Holding-Programming-Books');
+ThroughDirectory('../2500girls');
 
 console.log(names);
 
-fs.writeFileSync('images.json', JSON.stringify(names))
+fs.writeFileSync('2500girls.json', JSON.stringify(names))

@@ -12,8 +12,9 @@
 
   class Params {
     static imageSources = {
-      // 'girlsWithBooks': './assets/images.json',
-      girlsWithBooks: '/catch-me/assets/images.json',
+      // 'girlsWithBooks': './assets/animeGirlsHoldingProgrammingBooks.json',
+      girlsWithBooks: '/catch-me/assets/animeGirlsHoldingProgrammingBooks.json',
+      generatedGirls: '/catch-me/assets/AIFaces.json',
       sfwWaifu: 'https://waifu.vercel.app/sfw/waifu',
       sfwNeko: 'https://waifu.vercel.app/sfw/neko',
       sfwShinobu: 'https://waifu.vercel.app/sfw/shinobu',
@@ -616,7 +617,8 @@
     loading;
     width;
     height
-    images;
+    animeGirlsHoldingProgrammingBooks;
+    AIFaces;
 
     constructor(width, height) {
       this.width = width - 10;
@@ -635,16 +637,27 @@
 
     getUrl(source) {
       if (source === Params.imageSources.girlsWithBooks) {
-        if (!this.images) {
+        if (!this.animeGirlsHoldingProgrammingBooks) {
           return fetch(source)
             .then((res) => res.json())
             .then((res) => {
-              this.images = res;
+              this.animeGirlsHoldingProgrammingBooks = res;
               return res[getRandomNumber(0, res.length - 1)];
             });
         }
 
-        return Promise.resolve(this.images[getRandomNumber(0, this.images.length - 1)]);
+        return Promise.resolve(this.animeGirlsHoldingProgrammingBooks[getRandomNumber(0, this.animeGirlsHoldingProgrammingBooks.length - 1)]);
+      } else if (source === Params.imageSources.generatedGirls) {
+        if (!this.AIFaces) {
+          return fetch(source)
+            .then((res) => res.json())
+            .then((res) => {
+              this.AIFaces = res;
+              res[getRandomNumber(0, res.length - 1)]
+            });
+        }
+
+        return Promise.resolve(this.AIFaces[getRandomNumber(0, this.AIFaces.length - 1)]);
       } else {
         return Promise.resolve(`${source}?${Date.now()}`);
       }
@@ -812,6 +825,20 @@ class Main {
   onGameCompleted = () => {
     this.uiController.showPause();
     this.uiController.removeCatchButton();
+
+    if (startConfetti) {
+      startConfetti();
+
+      const timeout = setTimeout(stopConfetti, 3000);
+
+      function callback() {
+        stopConfetti();
+        clearTimeout(timeout);
+        document.body.removeEventListener('click', callback);
+      }
+
+      document.body.addEventListener('click', callback);
+    }
   }
 }
 
