@@ -625,9 +625,6 @@
       }
 
       if (source === Params.imageSources.sfwWaifu) {
-        // return fetch(source)
-        //   .then((res) => res.blob())
-        //   .then((res) => URL.createObjectURL(res));
         return Promise.resolve(source)
       }
     }
