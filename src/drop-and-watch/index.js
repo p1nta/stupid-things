@@ -1,4 +1,8 @@
-const step = 100;
+const isTouchDevice = ('ontouchstart' in window) ||
+    (navigator.maxTouchPoints > 0) ||
+    (navigator.msMaxTouchPoints > 0);
+
+const step = isTouchDevice ? 50 : 100;
 
 function getRandomNumber(min, max) {
   return Math.round(Math.random() * (max - min) + min);
