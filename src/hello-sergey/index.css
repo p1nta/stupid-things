@@ -8,7 +8,7 @@
   z-index: -1;
 }
 
-.step_4_wrapper {
+.step_5_wrapper {
   display: none;
 }
 
@@ -33,6 +33,10 @@
 }
 
 [data-step="4"] .step_4_wrapper {
+  visibility: visible;
+  z-index: 1;
+}
+[data-step="5"] .step_5_wrapper {
   display: block;
   visibility: visible;
   z-index: 1;

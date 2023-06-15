@@ -5,7 +5,6 @@
  * 2 - bad response
  * 3 - good response
  */
-
 class Steps {
   constructor(cb) {
     this._step = 0;
@@ -19,7 +18,11 @@ class Steps {
   }
 
   agree() {
-    if (this._step < 2) {
+    if (this._step === 1) {
+      this._step = 3;
+    } else if (this._step === 2){
+      this._step = 5;
+    } else {
       this._step += 1;
     }
 
@@ -27,38 +30,24 @@ class Steps {
   }
 
   disagree() {
-    this._step = 3;
+    if (this._step === 1) {
+      this._step = 2;
+    } else {
+      this._step = 4;
+    }
 
     this._cb(this._step);
   }
 }
 
 const body = document.body;
-let isSergey = false
 
 window.stepsController = new Steps((step) => {
-  const score = Number(localStorage.getItem('score')) || 0;
+  if (step === 5) {
+    const videoElement = document.getElementsByTagName('video');
 
-  if (step === 1) {
-    isSergey = true;
-  }
-
-  if (step === 3) {
-    const newScore = score + 1;
-    localStorage.setItem('score', String(newScore));
-
-    if (isSergey && score > 3) {
-      localStorage.removeItem('score');
-
-      body.setAttribute('data-step', 4);
-
-      const videoElement = document.getElementsByTagName('video')[0];
-
-      if (videoElement) {
-        videoElement.play();
-      }
-
-      return;
+    if (videoElement && videoElement[0]) {
+      videoElement[0].play();
     }
   }
 
