@@ -1,0 +1,91 @@
+.drop_start {
+  height: 100px;
+  display: flex;
+  margin: 0 auto;
+  border: 2px solid rgba(125, 35, 209);
+}
+
+.play_board {
+  height: calc(100% - 200px);
+  display: flex;
+  justify-content: center;
+}
+
+.drop_end {
+  height: 100px;
+  display: flex;
+  margin: 0 auto;
+  border: 2px solid rgba(125, 35, 209);
+}
+
+.variant_button {
+  font-size: 22px;
+  padding: 5px 10px;
+  border-right: 2px solid rgba(125, 35, 209);
+  color: rgba(125, 35, 209);
+  background-color: transparent;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color .3s;
+}
+
+.variant_button:last-child {
+  border: none;
+}
+
+.variant_button:hover:not(:disabled) {
+  background-color: rgba(196, 149, 224, 0.7);
+}
+
+.canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.active_start_button {
+  background-color: rgba(73, 228, 76, 0.7);
+}
+
+.active_final_button {
+  background-color: rgba(73, 228, 76, 0.7);
+}
+
+.dialog {
+  font-size: 24px;
+  margin: auto;
+  padding: 40px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.dialog_text {
+  margin-bottom: 40px;
+}
+
+.dialog_button {
+  font-size: 22px;
+  padding: 5px 10px;
+  border: 2px solid rgba(125, 35, 209);
+  color: rgba(125, 35, 209);
+  background-color: transparent;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.success {
+  background-color: rgb(80, 200, 120);
+  border: 2px solid rgb(9, 121, 105);
+}
+
+.failed {
+  background-color: rgb(255, 49, 49);
+  border: 2px solid rgb(136, 8, 8);
+}
+
+.success::backdrop {
+  background: rgba(80, 200, 120, 0.1);
+}
+
+.failed::backdrop {
+  background: rgba(255, 49, 49, 0.1);
+}
