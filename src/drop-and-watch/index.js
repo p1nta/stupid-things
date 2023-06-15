@@ -1,6 +1,4 @@
 const step = 100;
-const width = 10;
-const height = 13;
 
 function getRandomNumber(min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -86,6 +84,9 @@ function drawLine(ctx, grid, initialPoint) {
 function main() {
   let initialPoint;
   let finalPoint;
+
+  const width = Math.min(Math.ceil(window.innerWidth / 100), 15);
+  const height = Math.min(Math.ceil(window.innerHeight / 100), 15);
 
   const playBoard = document.getElementById('play_board');
   const dropStart = document.getElementById('drop_start');
