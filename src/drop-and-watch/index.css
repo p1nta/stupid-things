@@ -2,7 +2,7 @@
   height: 100px;
   display: flex;
   margin: 0 auto;
-  border: 2px solid rgba(125, 35, 209);
+  border: 2px solid rgba(100, 50, 150, .8);
 }
 
 .play_board {
@@ -15,14 +15,14 @@
   height: 100px;
   display: flex;
   margin: 0 auto;
-  border: 2px solid rgba(125, 35, 209);
+  border: 2px solid rgba(100, 50, 150, .8);
 }
 
 .variant_button {
   font-size: 22px;
   padding: 5px 10px;
-  border-right: 2px solid rgba(125, 35, 209);
-  color: rgba(125, 35, 209);
+  border-right: 2px solid rgba(100, 50, 150, .8);
+  color: rgba(100, 50, 150, .8);
   background-color: transparent;
   cursor: pointer;
   width: 100%;
@@ -43,11 +43,11 @@
 }
 
 .active_start_button {
-  background-color: rgba(73, 228, 76, 0.7);
+  background-color: rgba(150, 50, 150, .5);
 }
 
 .active_final_button {
-  background-color: rgba(73, 228, 76, 0.7);
+  background-color: rgba(150, 50, 150, .5);
 }
 
 .dialog {
@@ -65,11 +65,21 @@
 .dialog_button {
   font-size: 22px;
   padding: 5px 10px;
-  border: 2px solid rgba(125, 35, 209);
-  color: rgba(125, 35, 209);
+  border: 2px solid rgba(100, 50, 150, .8);
+  color: rgba(100, 50, 150, .8);
   background-color: transparent;
   border-radius: 3px;
   cursor: pointer;
+}
+
+[data-result="success"] .active_final_button,
+[data-result="success"] .active_start_button {
+  background-color: rgb(80, 200, 120);
+}
+
+[data-result="fail"] .active_final_button,
+[data-result="fail"] .active_start_button {
+  background-color: rgb(255, 49, 49);
 }
 
 .success {

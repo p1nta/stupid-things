@@ -183,8 +183,10 @@ function main() {
 
     if (res === finalPoint) {
       dialogSuccess.showModal();
+      document.body.setAttribute('data-result', 'success');
     } else {
       dialogFail.showModal();
+      document.body.setAttribute('data-result', 'fail');
     }
   }
 
