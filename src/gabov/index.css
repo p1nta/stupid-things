@@ -23,7 +23,7 @@
 }
 
 .gabov {
-  background-image: url('/gabov/assets/AlexanderGabov.jpeg');
+  background-image: url('/gabov/assets/img/AlexanderGabov.jpeg');
 }
 
 .text {
@@ -38,66 +38,108 @@
   color: #ffffff;
 }
 .italy {
-  background-image: url('/gabov/assets/italy.png');
+  background-image: url('/gabov/assets/img/italy.png');
   opacity: 0.3;
 }
 .ukraine {
-  background-image: url('/gabov/assets/ukraine.png');
+  background-image: url('/gabov/assets/img/ukraine.png');
   opacity: 0.3;
 }
 .finn {
-  background-image: url('/gabov/assets/finland.png');
+  background-image: url('/gabov/assets/img/finland.png');
   opacity: 0.3;
 }
 .georgia {
-  background-image: url('/gabov/assets/georgia.png');
+  background-image: url('/gabov/assets/img/georgia.png');
   opacity: 0.3;
 }
 .deutschland {
-  background-image: url('/gabov/assets/germany.png');
+  background-image: url('/gabov/assets/img/germany.png');
   opacity: 0.3;	
 }
 .netherlands {
-  background-image: url('/gabov/assets/netherlands.svg');
+  background-image: url('/gabov/assets/img/netherlands.svg');
   opacity: 0.3;	
 }
 .czech {
-  background-image: url('/gabov/assets/czech.png');
+  background-image: url('/gabov/assets/img/czech.png');
   opacity: 0.3;	
 }
 .france {
-  background-image: url('/gabov/assets/france.png');
+  background-image: url('/gabov/assets/img/france.png');
   opacity: 0.3;	
 }
 .poland {
-  background-image: url('/gabov/assets/poland.png');
+  background-image: url('/gabov/assets/img/poland.png');
   opacity: 0.3;	
 }
 .spanish {
-  background-image: url('/gabov/assets/spain.png');
+  background-image: url('/gabov/assets/img/spain.png');
   opacity: 0.3;	
 }
 .japan {
-  background-image: url('/gabov/assets/japan.png');
+  background-image: url('/gabov/assets/img/japan.png');
   opacity: 0.3;	
 }
 .vietnam {
-  background-image: url('/gabov/assets/vietnam.png');
+  background-image: url('/gabov/assets/img/vietnam.png');
   opacity: 0.3;	
 }
 .brazil {
-  background-image: url('/gabov/assets/brazil.png');
+  background-image: url('/gabov/assets/img/brazil.png');
   opacity: 0.3;	
 }
 .armenia {
-  background-image: url('/gabov/assets/armenia.png');
+  background-image: url('/gabov/assets/img/armenia.png');
   opacity: 0.3;	
 }
 .israel {
-  background-image: url('/gabov/assets/israel.png');
+  background-image: url('/gabov/assets/img/israel.png');
   opacity: 0.3;		
 }
 .trex {
-  background-image: url('/gabov/assets/trex.png');
+  background-image: url('/gabov/assets/img/trex.png');
   opacity: 0.3;			
+}
+
+.button_show_dialog {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  background-color: rgba(125, 35, 209, .6);
+  color: white;
+  padding: 5px
+}
+
+.dialog {
+  font-size: 24px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 3px;
+}
+
+fieldset {
+  margin-bottom: 30px;
+}
+
+.legend {
+  margin-bottom: 25px;
+}
+
+.variant {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.dialog_button {
+  font-size: 22px;
+  padding: 5px 10px;
+  border: 2px solid rgba(125, 35, 209);
+  color: rgba(125, 35, 209);
+  background-color: transparent;
+  border-radius: 3px;
+  cursor: pointer;
 }
