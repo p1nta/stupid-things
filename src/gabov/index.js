@@ -5,7 +5,8 @@ function main() {
 
 
   let dialogValue;
-  let variant = -1;
+  let variant = 1;
+  let letActiveAudioEl;
 
   const elements = [
     document.getElementById('block_italy'),
@@ -26,7 +27,7 @@ function main() {
     document.getElementById('block_trex'),
   ];
 
-  function dialogInit(callback) {
+  function dialogInit() {
     const showButton = document.getElementById("showDialog");
     const dialog = document.getElementById("audioOptionsDialog");
 
@@ -42,6 +43,11 @@ function main() {
         }
 
         showButton.addEventListener("click", function () {
+          if (letActiveAudioEl) {
+            letActiveAudioEl.pause();
+            letActiveAudioEl = null;
+          }
+
           dialog.showModal();
         });
 
@@ -49,81 +55,39 @@ function main() {
           variant = Number(dialogValue);
           event.preventDefault();
           dialog.close();
-          callback();
         });
       }
     }
   }
 
   function listenersInit() {
-    const listeners = [];
-
-    return function () {
-      if (listeners.length) {
-        for (let i = 0; i < listeners.length; i += 1) {
-          const element = listeners[i];
-          element();
-          listeners.splice(i, 1);
-        }
-      }
-
-
-
-      for (let i = 0; i < elements.length; i += 1) {
-        const element = elements[i];
-        const audioEl = element?.getElementsByTagName('audio')[variant];
-
-        if (audioEl) {
-          const { add, remove } = addListener(audioEl)
-
-          listeners.push(remove);
-
-          add(element);
-        }
-      }
+    for (let i = 0; i < elements.length; i += 1) {
+      const element = elements[i];
+      addListener(element);
     }
   }
 
-  function main() {
-
-  }
-
-  function addListener(audioEl) {
+  function addListener(element) {
     function listenerEnter() {
-      audioEl.play();
+      if (letActiveAudioEl) {
+        letActiveAudioEl.pause();
+        letActiveAudioEl = null;
+      }
+
+      letActiveAudioEl = element?.getElementsByTagName('audio')[variant];
+      letActiveAudioEl?.play();
     };
-    function listenerLeave() {
-      audioEl.pause();
-    };
 
-    return {
-      add: function (el) {
-        if (isTouchDevice) {
-          el.addEventListener('touchstart', listenerEnter);
-
-          el.addEventListener('touchcancel', listenerLeave);
-          el.addEventListener('touchleave', listenerLeave);
-        } else {
-          el.addEventListener('mouseenter', listenerEnter);
-
-          el.addEventListener('mouseleave', listenerLeave);
-        }
-      },
-      remove: function (el) {
-        if (isTouchDevice) {
-          el.removeEventListener('touchstart', listenerEnter);
-
-          el.removeEventListener('touchcancel', listenerLeave);
-          el.removeEventListener('touchleave', listenerLeave);
-        } else {
-          el.removeEventListener('mouseenter', listenerEnter);
-
-          el.removeEventListener('mouseleave', listenerLeave);
-        }
-      },
+    if (isTouchDevice) {
+      element.addEventListener('touchstart', listenerEnter);
+    } else {
+      element.addEventListener('mouseenter', listenerEnter);
     }
   }
-  dialogInit(listenersInit());
+
+
+  dialogInit();
+  listenersInit();
 }
 
 window.onload = main;
