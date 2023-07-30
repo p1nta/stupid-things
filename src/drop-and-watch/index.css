@@ -49,11 +49,7 @@
   position: absolute;
 }
 
-.active_start_button {
-  background-color: rgba(150, 50, 150, .5);
-}
-
-.active_final_button {
+.active_variant_button {
   background-color: rgba(150, 50, 150, .5);
 }
 
@@ -79,13 +75,11 @@
   cursor: pointer;
 }
 
-[data-result="success"] .active_final_button,
-[data-result="success"] .active_start_button {
+[data-result="success"] .active_variant_button {
   background-color: rgb(80, 200, 120);
 }
 
-[data-result="fail"] .active_final_button,
-[data-result="fail"] .active_start_button {
+[data-result="fail"] .active_variant_button {
   background-color: rgb(255, 49, 49);
 }
 

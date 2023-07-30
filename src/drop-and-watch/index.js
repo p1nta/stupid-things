@@ -229,7 +229,15 @@ function setDisabledAttribute(el) {
 
 function removeDisabledAttribute(el) {
   el.disabled = false;
-  el.classList.remove('active_start_button');
+  el.classList.remove('active_variant_button');
+}
+
+function iterateHTMLCollection(collection, callback) {
+  for (let i = 0; i < collection.length; i += 1) {
+    const element = collection[i];
+    
+    callback(element);
+  }
 }
 
 function main() {
@@ -265,8 +273,9 @@ function main() {
 
   function retry(event, variant) {
     event.preventDefault();
+    document.body.removeAttribute('data-result');
 
-    if (variant === 'faile') {
+    if (variant === 'fail') {
       dialogFail.close();
     } else {
       dialogSuccess.close();
@@ -275,8 +284,8 @@ function main() {
     state.initialPoint = -1;
     state.finalPoint = -1;
 
-    dropStart.childNodes.forEach(removeDisabledAttribute);
-    dropEnd.childNodes.forEach(removeDisabledAttribute);
+    iterateHTMLCollection(dropStart.children, removeDisabledAttribute)
+    iterateHTMLCollection(dropEnd.children, removeDisabledAttribute)
 
     if (bgCtx && pathCtx) {
       bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
@@ -293,8 +302,8 @@ function main() {
   function startButtonListener(e) {
     if (state.initialPoint === -1) {
       state.initialPoint = Number(e.target.value);
-      e.target.classList.add('active_start_button');
-      dropStart.childNodes.forEach(setDisabledAttribute);
+      e.target.classList.add('active_variant_button');
+      iterateHTMLCollection(dropStart.children, setDisabledAttribute)
     }
 
     if (state.finalPoint !== -1 && state.initialPoint !== -1) {
@@ -305,8 +314,8 @@ function main() {
   function finalButtonListener(e) {
     if (state.finalPoint === -1) {
       state.finalPoint = Number(e.target.value);
-      e.target.classList.add('active_final_button');
-      dropEnd.childNodes.forEach(setDisabledAttribute);
+      e.target.classList.add('active_variant_button');
+      iterateHTMLCollection(dropEnd.children, setDisabledAttribute)
     }
 
     if (state.finalPoint !== -1 && state.initialPoint !== -1) {
