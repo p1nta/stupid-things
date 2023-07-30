@@ -34,6 +34,10 @@
   border: none;
 }
 
+.variant_button:disabled {
+  cursor: not-allowed;
+}
+
 .variant_button:hover:not(:disabled) {
   background-color: rgba(196, 149, 224, 0.7);
 }

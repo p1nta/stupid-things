@@ -42,13 +42,21 @@ function drawGrid(ctx, width, height) {
   }
 
   for (let j = 0; j <= width; j += 1) {
-    ctx.moveTo(j * step, 0);
+    let kX = 0;
+
+    if (j === 0) {
+      kX = 1;
+    } else if (j === width) {
+      kX = -1;
+    }
+
+    ctx.moveTo((j * step) + kX, 0);
     ctx.lineTo(j * step, step * height);
     ctx.stroke();
   }
 }
 
-function drawLineV1(ctx, grid, initialPoint) {
+function drawPathV1(ctx, grid, initialPoint) {
   let res = initialPoint;
   let prevPoint = grid[0][initialPoint];
 
@@ -117,11 +125,13 @@ function drawFilledCircle(ctx, center, radius = 5) {
 }
 
 
-function drawLineV2(ctx, grid, width, height, onGameFinish) {
+function drawPathV2(ctx, grid, width, height, onGameFinish) {
   const { pathPoints, finalIndex } = getPathPoints(grid);
   let frame;
   let lineCount = 1;
   let stepIndex = 1;
+  let headRadius = 10;
+  let direction = -1;
 
   function draw() {
     if (ctx) {
@@ -153,9 +163,20 @@ function drawLineV2(ctx, grid, width, height, onGameFinish) {
 
         ctx.lineTo(finalPoint[0], finalPoint[1]);
         ctx.stroke();
-        
+
         if (step) {
-          drawFilledCircle(ctx, finalPoint, 7)
+          drawFilledCircle(ctx, finalPoint, headRadius)
+
+
+          if (direction === -1 && headRadius === 5) {
+            direction = 1;
+          }
+
+          if (direction === 1 && headRadius === 10) {
+            direction = -1;
+          }
+
+          headRadius += direction;
         }
 
         if (!step) {
@@ -235,7 +256,7 @@ function removeDisabledAttribute(el) {
 function iterateHTMLCollection(collection, callback) {
   for (let i = 0; i < collection.length; i += 1) {
     const element = collection[i];
-    
+
     callback(element);
   }
 }
@@ -300,11 +321,11 @@ function main() {
 
 
   function startButtonListener(e) {
-    if (state.initialPoint === -1) {
-      state.initialPoint = Number(e.target.value);
-      e.target.classList.add('active_variant_button');
-      iterateHTMLCollection(dropStart.children, setDisabledAttribute)
+    if (state.initialPoint !== -1) {
+      dropStart.children[state.initialPoint].classList.remove('active_variant_button');
     }
+    state.initialPoint = Number(e.target.value);
+    e.target.classList.add('active_variant_button');
 
     if (state.finalPoint !== -1 && state.initialPoint !== -1) {
       startGame();
@@ -312,11 +333,11 @@ function main() {
   }
 
   function finalButtonListener(e) {
-    if (state.finalPoint === -1) {
-      state.finalPoint = Number(e.target.value);
-      e.target.classList.add('active_variant_button');
-      iterateHTMLCollection(dropEnd.children, setDisabledAttribute)
+    if (state.finalPoint !== -1) {
+      dropEnd.children[state.finalPoint].classList.remove('active_variant_button');
     }
+    state.finalPoint = Number(e.target.value);
+    e.target.classList.add('active_variant_button');
 
     if (state.finalPoint !== -1 && state.initialPoint !== -1) {
       startGame();
@@ -352,7 +373,10 @@ function main() {
   }
 
   function startGame() {
-    drawLineV2(
+    iterateHTMLCollection(dropStart.children, setDisabledAttribute)
+    iterateHTMLCollection(dropEnd.children, setDisabledAttribute)
+
+    drawPathV2(
       pathCtx,
       grid,
       pathCanvas.width,
