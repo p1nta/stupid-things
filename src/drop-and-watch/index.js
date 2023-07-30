@@ -110,9 +110,9 @@ function getPathPoints(grid) {
   return { pathPoints, finalIndex };
 }
 
-function drawFilledCircle(ctx, center) {
+function drawFilledCircle(ctx, center, radius = 5) {
   ctx.beginPath();
-  ctx.arc(center[0], center[1], 5, 0, 2 * Math.PI);
+  ctx.arc(center[0], center[1], radius, 0, 2 * Math.PI);
   ctx.fill();
 }
 
@@ -123,14 +123,11 @@ function drawLineV2(ctx, grid, width, height, onGameFinish) {
   let lineCount = 1;
   let stepIndex = 1;
 
-
-  if (ctx) {
-    ctx.clearRect(0, 0, width, height);
-    drawFilledCircle(ctx, pathPoints[0]);
-  }
-
   function draw() {
     if (ctx) {
+      ctx.clearRect(0, 0, width, height);
+      drawFilledCircle(ctx, pathPoints[0]);
+
       for (let i = 0; i < lineCount; i += 1) {
         const startPoint = pathPoints[i];
         const nextPoint = pathPoints[i + 1];
@@ -156,6 +153,10 @@ function drawLineV2(ctx, grid, width, height, onGameFinish) {
 
         ctx.lineTo(finalPoint[0], finalPoint[1]);
         ctx.stroke();
+        
+        if (step) {
+          drawFilledCircle(ctx, finalPoint, 7)
+        }
 
         if (!step) {
           drawFilledCircle(ctx, finalPoint);
@@ -313,7 +314,7 @@ function main() {
 
   function createButton(text, parent, variant = 'start') {
     const button = document.createElement('button');
-    button.innerText = text;
+    button.innerText = text + 1;
     button.value = text;
     button.classList.add('variant_button')
     parent.appendChild(button);
