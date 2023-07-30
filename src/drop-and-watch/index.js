@@ -263,7 +263,9 @@ function main() {
 
   let grid = preparePoints(bgCtx, width, height);
 
-  function retry(variant) {
+  function retry(event, variant) {
+    event.preventDefault();
+
     if (variant === 'faile') {
       dialogFail.close();
     } else {
@@ -283,9 +285,9 @@ function main() {
     }
   }
 
-  confirmBtnFail.addEventListener("click", () => retry('fail'));
+  confirmBtnFail.addEventListener("click", (e) => retry(e, 'fail'));
 
-  confirmBtnSuccess.addEventListener("click", () => retry('success'));
+  confirmBtnSuccess.addEventListener("click", (e) => retry(e, 'success'));
 
 
   function startButtonListener(e) {
