@@ -98,7 +98,7 @@ function main() {
     coin.radius += coin.radiusChangeDirection;
   }
 
-  function getPathPoints(grid) {
+  function getPathPointsV0(grid) {
     const pathPoints = [grid[0][state.initialPoint]];
     let finalIndex = state.initialPoint;
 
