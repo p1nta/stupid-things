@@ -24,8 +24,9 @@
   align-items: center;
   justify-content: space-around;
   font-size: 19px;
-  padding: 5px 10px;
+  padding: 5px;
   height: 50%;
+  text-align: center;
 }
 
 .drop_block_buttons {
@@ -36,7 +37,7 @@
 
 .variant_button {
   font-size: 22px;
-  padding: 5px 10px;
+  padding: 5px 0;
   border-right: 2px solid rgba(100, 50, 150, .8);
   color: rgba(100, 50, 150, .8);
   background-color: transparent;
