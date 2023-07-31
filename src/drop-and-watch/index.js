@@ -444,8 +444,8 @@ function main() {
     throw new Error('Can\'t create CanvasRenderingContext2D!');
   }
 
-  dropStart.style.width = `${bgCanvas.offsetWidth}px`;
-  dropEnd.style.width = `${bgCanvas.offsetWidth}px`;
+  dropStart.parentElement.style.width = `${bgCanvas.offsetWidth}px`;
+  dropEnd.parentElement.style.width = `${bgCanvas.offsetWidth}px`;
 
   let grid = preparePoints(bgCtx, width, height);
 

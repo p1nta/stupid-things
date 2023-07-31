@@ -1,8 +1,8 @@
 .drop_start {
   height: 100px;
   display: flex;
+  flex-direction: column;
   margin: 0 auto;
-  border: 2px solid rgba(100, 50, 150, .8);
 }
 
 .play_board {
@@ -15,7 +15,22 @@
 .drop_end {
   height: 100px;
   display: flex;
+  flex-direction: column-reverse;
   margin: 0 auto;
+}
+
+.drop_block_description {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 19px;
+  padding: 5px 10px;
+  height: 50%;
+}
+
+.drop_block_buttons {
+  height: 50%;
+  display: flex;
   border: 2px solid rgba(100, 50, 150, .8);
 }
 
@@ -45,6 +60,9 @@
 .bg_canvas {
   max-width: 100%;
   max-height: 100%;
+  border-width: 0 2px 0 2px;
+  border-style: solid;
+  border-color: rgba(100, 50, 150, .8);
 }
 
 .path_canvas {
