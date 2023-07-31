@@ -14,12 +14,25 @@ function preparePoints(ctx, width, height) {
   const offset = step / 2;
   const coords = [];
 
-  for (let i = 0; i < height; i += 1) {
-    const y = offset + i * step;
+  for (let i = 0; i < (height * 2) - 1; i += 1) {
+    const y = offset + i * offset;
     coords.push([]);
+    const isOdd = i % 2;
 
-    for (let j = 0; j < width; j += 1) {
-      const x = offset + j * step;
+    for (let j = 0; j < (isOdd ? width + 1 : width); j += 1) {
+      let x = offset + j * step;
+
+      if (isOdd) {
+        x = j * step;
+
+        if (j === 0) {
+          x += 5;
+        }
+
+        if (j === width) {
+          x -= 5;
+        }
+      }
 
       coords[i].push([x, y]);
 
@@ -63,6 +76,7 @@ function drawPathV1(ctx, grid, initialPoint) {
 
     for (let i = 1; i < grid.length; i += 1) {
       const raw = grid[i];
+
       if (res === 0) {
         res = 1;
       } else if (res === raw.length - 1) {
@@ -95,15 +109,35 @@ function getPathPoints(grid) {
 
   for (let i = 1; i < grid.length; i += 1) {
     const raw = grid[i];
-    if (finalIndex === 0) {
-      finalIndex = 1;
-    } else if (finalIndex === raw.length - 1) {
-      finalIndex = raw.length - 2;
+    const isOdd = i % 2;
+
+    if (isOdd) {
+      if (finalIndex === 0) {
+        finalIndex = getRandomNumber(0, 1);
+      } else if (finalIndex === raw.length) {
+        finalIndex = raw.length - 1;
+      } else {
+        finalIndex = [
+          Math.max(finalIndex, 0),
+          Math.min(finalIndex + 1, raw.length),
+        ][getRandomNumber(0, 1)];
+      }
+
     } else {
-      finalIndex = [
-        Math.max(finalIndex - 1, 0),
-        Math.min(finalIndex + 1, raw.length - 1),
-      ][getRandomNumber(0, 1)];
+
+      if (finalIndex === 0) {
+        finalIndex = 0;
+      } else if (finalIndex === raw.length) {
+        finalIndex = [
+          Math.max(finalIndex, 0),
+          Math.min(finalIndex + 1, raw.length),
+        ][getRandomNumber(0, 1)];
+      } else {
+        finalIndex = [
+          Math.max(finalIndex - 1, 0),
+          Math.min(finalIndex, raw.length),
+        ][getRandomNumber(0, 1)];
+      }
     }
 
     pathPoints.push(raw[finalIndex]);
