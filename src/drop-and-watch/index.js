@@ -67,40 +67,162 @@ function drawGrid(ctx, width, height) {
   }
 }
 
-function drawPathV1(ctx, grid, initialPoint) {
-  let res = initialPoint;
+function drawPathV1(ctx, grid, initialPoint, onGameFinish) {
+  const { pathPoints, finalIndex } = getPathPoints(grid);
   let prevPoint = grid[0][initialPoint];
 
   if (ctx) {
     drawCircle(ctx, prevPoint, 5, 'fill');
 
-    for (let i = 1; i < grid.length; i += 1) {
-      const raw = grid[i];
-
-      if (res === 0) {
-        res = 1;
-      } else if (res === raw.length - 1) {
-        res = raw.length - 2;
-      } else {
-        res = [
-          Math.max(res - 1, 0),
-          Math.min(res + 1, raw.length - 1),
-        ][getRandomNumber(0, 1)];
-      }
+    for (let i = 1; i < pathPoints.length; i += 1) {
+      const point = pathPoints[i];
 
       ctx.beginPath();
       ctx.moveTo(prevPoint[0], prevPoint[1]);
 
-      prevPoint = raw[res];
+      prevPoint = point;
 
-      ctx.lineTo(prevPoint[0], prevPoint[1]);
+      ctx.lineTo(point[0], point[1]);
       ctx.stroke();
 
-      drawCircle(ctx, prevPoint, 5, 'fill');
+      drawCircle(ctx, point, 5, 'fill');
     }
   }
 
-  return res;
+  onGameFinish(finalIndex);
+}
+
+let coin = { x: 30, y: 30, speed: 0.001, t: 0, radius: 10 };
+let bezierCoords = [
+  { x: coin.x, y: coin.y },
+  { x: 70, y: 200 },
+  { x: 125, y: 295 },
+  { x: 350, y: 350 }
+]
+
+function moveBallInBezierCurve(ctx) {
+  let [p0, p1, p2, p3] = bezierCoords;
+  //Calculate the coefficients based on where the coin currently is in the animation
+  let cx = 3 * (p1.x - p0.x);
+  let bx = 3 * (p2.x - p1.x) - cx;
+  let ax = p3.x - p0.x - cx - bx;
+
+  let cy = 3 * (p1.y - p0.y);
+  let by = 3 * (p2.y - p1.y) - cy;
+  let ay = p3.y - p0.y - cy - by;
+
+  let t = coin.t;
+
+  //Increment t value by speed
+  coin.t += coin.speed;
+  //Calculate new X & Y positions of coin
+  let xt = ax * (t * t * t) + bx * (t * t) + cx * t + p0.x;
+  let yt = ay * (t * t * t) + by * (t * t) + cy * t + p0.y;
+
+  if (coin.t > 1) {
+    coin.t = 1;
+  }
+
+  //We draw the coin to the canvas in the new location
+  coin.x = xt;
+  coin.y = yt;
+  drawCircle(ctx, [coin.x, coin.y], coin.radius, 'fill', 'rgba(100, 50, 150, .8)');
+}
+
+function drawPathV4(ctx, grid, initialPoint, width, height, onGameFinish) {
+  let direction = -1;
+  const { pathPoints, finalIndex } = getPathPoints(grid);
+  let pointIndex = 1;
+  let point = grid[0][initialPoint];
+  coin = { x: point[0], y: point[1], speed: 0.03, t: 0, radius: 10 };
+  bezierCoords = [
+    { x: coin.x, y: coin.y },
+    { x: point[0], y: point[1] },
+    { x: pathPoints[pointIndex][0], y: pathPoints[pointIndex][1] - step },
+    { x: pathPoints[pointIndex][0], y: pathPoints[pointIndex][1] },
+  ]
+  let frame;
+
+  function draw() {
+    if (ctx) {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < pointIndex; i += 1) {
+        drawCircle(ctx, pathPoints[i], 5, 'fill');
+      }
+
+      moveBallInBezierCurve(ctx);
+
+      if (pointIndex === pathPoints.length - 1 && coin.t === 1) {
+        drawCircle(ctx, pathPoints[pointIndex], 5, 'fill');
+        drawCircle(ctx, [coin.x, coin.y], coin.radius, 'fill', 'rgba(100, 50, 150, .8)');
+        onGameFinish(finalIndex);
+        window.cancelAnimationFrame(frame);
+        return;
+        }
+
+      if (coin.t === 1) {
+        coin.t = 0;
+        drawCircle(ctx, pathPoints[pointIndex], 5, 'fill');
+        pointIndex += 1;
+
+        bezierCoords = [
+          { x: coin.x, y: coin.y },
+          { x: pathPoints[pointIndex - 1][0], y: pathPoints[pointIndex - 1][1] },
+          { x: pathPoints[pointIndex][0], y: pathPoints[pointIndex][1] - step },
+          { x: pathPoints[pointIndex][0], y: pathPoints[pointIndex][1] },
+        ]
+      }
+
+
+      if (direction === -1 && coin.radius === 5) {
+        direction = 1;
+      }
+
+      if (direction === 1 && coin.radius === 10) {
+        direction = -1;
+      }
+
+      coin.radius += direction;
+
+      frame = window.requestAnimationFrame(draw);
+    }
+  }
+
+  frame = window.requestAnimationFrame(draw);
+}
+
+function drawPathV3(ctx, grid, initialPoint, onGameFinish) {
+  const { pathPoints, finalIndex } = getPathPoints(grid);
+  let prevPoint = grid[0][initialPoint];
+
+  if (ctx) {
+    drawCircle(ctx, prevPoint, 5, 'fill');
+
+    for (let i = 1; i < pathPoints.length; i += 1) {
+      const point = pathPoints[i];
+
+      ctx.beginPath();
+      ctx.setLineDash([10, 250]);
+      ctx.lineDashOffset = -250;
+      ctx.moveTo(prevPoint[0], prevPoint[1]);
+
+      ctx.bezierCurveTo(
+        prevPoint[0],
+        prevPoint[1],
+        point[0],
+        prevPoint[1] - step,
+        point[0],
+        point[1]
+      );
+      ctx.stroke();
+
+      drawCircle(ctx, point, 5, 'fill');
+      prevPoint = point;
+    }
+  }
+
+  onGameFinish(finalIndex);
 }
 
 function getPathPoints(grid) {
@@ -146,13 +268,15 @@ function getPathPoints(grid) {
   return { pathPoints, finalIndex };
 }
 
-function drawCircle(ctx, center, radius = 5, type = 'fill') {
+function drawCircle(ctx, center, radius = 5, type = 'fill', color = 'black') {
   ctx.beginPath();
   ctx.arc(center[0], center[1], radius, 0, 2 * Math.PI);
-
+  
   if (type === 'fill') {
+    ctx.fillStyle = color;
     ctx.fill();
   } else {
+    ctx.strokeStyle = color;
     ctx.stroke();
   }
 }
@@ -418,9 +542,32 @@ function main() {
     iterateHTMLCollection(dropStart.children, setDisabledAttribute)
     iterateHTMLCollection(dropEnd.children, setDisabledAttribute)
 
-    drawPathV2(
+    // drawPathV1(
+    //   pathCtx,
+    //   grid,
+    //   state.initialPoint,
+    //   onGameFinish,
+    // );
+
+    // drawPathV2(
+    //   pathCtx,
+    //   grid,
+    //   pathCanvas.width,
+    //   pathCanvas.height,
+    //   onGameFinish,
+    // );
+
+    // drawPathV3(
+    //   pathCtx,
+    //   grid,
+    //   state.initialPoint,
+    //   onGameFinish,
+    // );
+
+    drawPathV4(
       pathCtx,
       grid,
+      state.initialPoint,
       pathCanvas.width,
       pathCanvas.height,
       onGameFinish,
