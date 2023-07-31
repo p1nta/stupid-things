@@ -23,9 +23,7 @@ function preparePoints(ctx, width, height) {
 
       coords[i].push([x, y]);
 
-      ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
-      ctx.stroke();
+      drawCircle(ctx, [x, y], 5, 'stroke');
     }
   }
 
@@ -61,9 +59,7 @@ function drawPathV1(ctx, grid, initialPoint) {
   let prevPoint = grid[0][initialPoint];
 
   if (ctx) {
-    ctx.beginPath();
-    ctx.arc(prevPoint[0], prevPoint[1], 5, 0, 2 * Math.PI);
-    ctx.fill();
+    drawCircle(ctx, prevPoint, 5, 'fill');
 
     for (let i = 1; i < grid.length; i += 1) {
       const raw = grid[i];
@@ -86,9 +82,7 @@ function drawPathV1(ctx, grid, initialPoint) {
       ctx.lineTo(prevPoint[0], prevPoint[1]);
       ctx.stroke();
 
-      ctx.beginPath();
-      ctx.arc(prevPoint[0], prevPoint[1], 5, 0, 2 * Math.PI);
-      ctx.fill();
+      drawCircle(ctx, prevPoint, 5, 'fill');
     }
   }
 
@@ -118,10 +112,15 @@ function getPathPoints(grid) {
   return { pathPoints, finalIndex };
 }
 
-function drawFilledCircle(ctx, center, radius = 5) {
+function drawCircle(ctx, center, radius = 5, type = 'fill') {
   ctx.beginPath();
   ctx.arc(center[0], center[1], radius, 0, 2 * Math.PI);
-  ctx.fill();
+
+  if (type === 'fill') {
+    ctx.fill();
+  } else {
+    ctx.stroke();
+  }
 }
 
 
@@ -136,7 +135,7 @@ function drawPathV2(ctx, grid, width, height, onGameFinish) {
   function draw() {
     if (ctx) {
       ctx.clearRect(0, 0, width, height);
-      drawFilledCircle(ctx, pathPoints[0]);
+      drawCircle(ctx, pathPoints[0], 5, 'fill');
 
       for (let i = 0; i < lineCount; i += 1) {
         const startPoint = pathPoints[i];
@@ -165,7 +164,7 @@ function drawPathV2(ctx, grid, width, height, onGameFinish) {
         ctx.stroke();
 
         if (step) {
-          drawFilledCircle(ctx, finalPoint, headRadius)
+          drawCircle(ctx, finalPoint, headRadius)
 
 
           if (direction === -1 && headRadius === 5) {
@@ -180,7 +179,7 @@ function drawPathV2(ctx, grid, width, height, onGameFinish) {
         }
 
         if (!step) {
-          drawFilledCircle(ctx, finalPoint);
+          drawCircle(ctx, finalPoint);
 
           if (isFinalLine) {
             stepIndex = 1;
