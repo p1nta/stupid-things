@@ -115,7 +115,10 @@ function getPathPoints(grid) {
       if (finalIndex === 0) {
         finalIndex = getRandomNumber(0, 1);
       } else if (finalIndex === raw.length) {
-        finalIndex = raw.length - 1;
+        finalIndex = [
+          Math.max(finalIndex, 0),
+          Math.min(finalIndex + 1, raw.length),
+        ][getRandomNumber(0, 1)];
       } else {
         finalIndex = [
           Math.max(finalIndex, 0),
@@ -128,10 +131,7 @@ function getPathPoints(grid) {
       if (finalIndex === 0) {
         finalIndex = 0;
       } else if (finalIndex === raw.length) {
-        finalIndex = [
-          Math.max(finalIndex, 0),
-          Math.min(finalIndex + 1, raw.length),
-        ][getRandomNumber(0, 1)];
+        finalIndex = raw.length - 1;
       } else {
         finalIndex = [
           Math.max(finalIndex - 1, 0),
