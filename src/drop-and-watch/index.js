@@ -29,7 +29,7 @@ function preparePoints(ctx, width, height) {
     }
   }
 
-  drawGrid(ctx, width, height);
+  // drawGrid(ctx, width, height);
 
   return coords;
 }
@@ -292,15 +292,20 @@ function main() {
 
   let grid = preparePoints(bgCtx, width, height);
 
-  function retry(event, variant) {
+  function closeDialog(event, variant) {
     event.preventDefault();
-    document.body.removeAttribute('data-result');
 
     if (variant === 'fail') {
       dialogFail.close();
     } else {
       dialogSuccess.close();
     }
+
+    retry();
+  }
+
+  function retry() {
+    document.body.removeAttribute('data-result');
 
     state.initialPoint = -1;
     state.finalPoint = -1;
@@ -315,9 +320,13 @@ function main() {
     }
   }
 
-  confirmBtnFail.addEventListener("click", (e) => retry(e, 'fail'));
+  confirmBtnFail.addEventListener("click", (e) => closeDialog(e, 'fail'));
 
-  confirmBtnSuccess.addEventListener("click", (e) => retry(e, 'success'));
+  confirmBtnSuccess.addEventListener("click", (e) => closeDialog(e, 'success'));
+
+  dialogFail.addEventListener("close", () => retry());
+
+  dialogSuccess.addEventListener("close", () => retry());
 
 
   function startButtonListener(e) {
