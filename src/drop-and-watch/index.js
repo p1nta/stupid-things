@@ -139,8 +139,7 @@ function main() {
       grid[0][state.initialPoint],
     ];
     const odd = [state.initialPoint];
-    const even = [];
-    
+
     for (let i = 2; i < grid.length; i += 2) {
       const prevIndex = odd[odd.length - 1];
       const rawLastIndex = grid[i].length - 1;
