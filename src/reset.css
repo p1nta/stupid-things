@@ -14,7 +14,7 @@
 
 :root {
   --rows: 2;
-  ---st-background-color: antiquewhite;
+  ---st-background-color: white;
   ---st-text-color: #262626;
   ---st-inline-link-color: rgb(82 0 164);
   ---st-block-link-color: rgb(70 39 101);
@@ -100,7 +100,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    ---st-text-color: antiquewhite;
+    ---st-text-color: white;
     ---st-background-color: #262626;
     ---st-inline-link-color: rgb(192 149 235);
     ---st-block-link-color: rgb(210 167 252);
