@@ -1,7 +1,7 @@
 .app_config_block {
   z-index: 3;
   padding: 0 5px 5px;
-  background-color: white;
+  background-color: var(---st-background-color);
   visibility: hidden;
   position: fixed;
   width: 100%;
@@ -15,6 +15,7 @@
   font-size: 2rem;
   max-width: 600px;
   margin: 20px auto;
+  color: var(---st-text-color);
 }
 
 .app_config_block_item {
@@ -25,9 +26,10 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border: 1px solid rgba(150, 50, 150, .5);
+  border: 1px solid var(---st-block-background-color);
   border-radius: 5px;
-  background-color: rgba(150, 50, 150, .5);
+  background-color: var(---st-block-background-color);
+  color: var(---st-block-link-color);
 }
 
 .app_config_block_item_input_wrapper {
@@ -58,7 +60,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 5px;
-  background-color: white;
+  background-color: var(---st-background-color);
   position: fixed;
   bottom: 0;
   border: 1px solid rgba(190, 50, 150, .5);
@@ -80,6 +82,7 @@
   background-color: rgba(150, 50, 150, .5);
   border: 1px solid rgba(190, 50, 150, .5);
   cursor: pointer;
+  color: var(---st-text-color);
 }
 
 .controls_icon {
@@ -129,7 +132,7 @@
 .loading_block {
   z-index: 4;
   padding: 5px;
-  background-color: white;
+  background-color: var(---st-background-color);
   visibility: hidden;
   position: fixed;
   width: 100%;
@@ -139,6 +142,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  color: var(---st-text-color);
 }
 
 .loading_icon {
@@ -173,7 +177,7 @@
 
 .flip_box_front {
   background-color: rgba(150, 50, 150, .5);
-  color: black;
+  color: var(---st-text-color);
 }
 
 .flip_box_back {
@@ -188,8 +192,8 @@
 }
 
 .m_disabled {
-  border: 1px solid rgba(150, 150, 150, .5);
-  background-color: rgba(150, 150, 150, .5);
+  border: 1px solid rgba(150, 150, 150, 1);
+  background-color: rgba(150, 150, 150, 1);
   color: rgba(90, 90, 90, 1);
   pointer-events: none;
 }

@@ -7,14 +7,31 @@
 
 .link {
   border-radius: 5px;
-  background-color: rgba(150, 50, 150, .5);
+  background-color: var(---st-block-background-color);
   text-decoration: none;
-  color:rgba(100, 50, 150, .8);
   font-size: 3rem;
   padding: 20px 20px 50px;
   font-weight: 600;
   display: block;
   margin-bottom: 10px;
+  transition: transform .3s;
+}
+
+.link_text {
+  color: var(---st-block-link-color);
+}
+
+.link:hover {
+  transform: scale(1.05);
+}
+
+.pseudo_home_button {
+  vertical-align: middle;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background: transparent;
 }
 
 @media screen and (max-width: 835px) {
