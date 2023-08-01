@@ -55,6 +55,7 @@ h1 {
   left: 50%;
   transform: translate(-50%, -100%);
   z-index: 2;
+  color: var(---st-text-color);
 }
 
 
