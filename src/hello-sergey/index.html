@@ -1,99 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🤪</text></svg>">
-    <title>
-      Hello Sergey
-    </title>
-    <link rel="stylesheet" href="/hello-sergey/index.css">
-    <link rel="stylesheet" href="/reset.css">
-    <script src="/hello-sergey/index.js"></script>
-  </head>
-  <body>
-    <div class="base">
-      <header class="header">
-        <a class="home_button" href="/" title="Go to main">
-          <svg
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 471.2 471.2"
-          >
-            <g>
-              <path fill="currentColor" d="M396.7,0H74.5C33.4,0,0,33.4,0,74.5v322.2c0,41.1,33.4,74.5,74.5,74.5h322.2c41.1,0,74.5-33.4,74.5-74.5V74.5
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🤪</text></svg>">
+  <title>
+    Hello Sergey
+  </title>
+  <link rel="stylesheet" href="/hello-sergey/index.css">
+  <link rel="stylesheet" href="/reset.css">
+  <script src="/hello-sergey/index.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPCHXS3YPX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CPCHXS3YPX');
+  </script>
+</head>
+
+<body>
+  <div class="base">
+    <header class="header">
+      <a class="home_button" href="/" title="Go to main">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 471.2 471.2">
+          <g>
+            <path fill="currentColor" d="M396.7,0H74.5C33.4,0,0,33.4,0,74.5v322.2c0,41.1,33.4,74.5,74.5,74.5h322.2c41.1,0,74.5-33.4,74.5-74.5V74.5
                 C471.2,33.5,437.7,0,396.7,0z M444.2,396.7c0,26.2-21.3,47.5-47.5,47.5H74.5c-26.2,0-47.5-21.3-47.5-47.5V74.5
-                C27,48.3,48.3,27,74.5,27h322.2c26.2,0,47.5,21.3,47.5,47.5V396.7z"/>
-              <path fill="currentColor" d="M344.6,222.1H159.2l47.4-47.5c5.3-5.3,5.3-13.8,0-19.1s-13.8-5.3-19.1,0L117,226c-5.3,5.3-5.3,13.8,0,19.1l70.6,70.5
-                c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1L159.1,249h185.5c7.5,0,13.5-6,13.5-13.5S352.1,222.1,344.6,222.1z"/>
-            </g>
-          </svg>
-        </a>
-        <p class="header_text_block">
-          Nice to see You on stupid things 🤪! If you find a bug or have a proposal leave it at <a href="https://github.com/p1nta/stupid-things/issues" target="_blank">github</a> or <a href="mailto:crispworm@gmail.com">write me a letter</a>!
-        </p>
-      </header>
-      <div class="app_wrapper">
-        <div class="content step_0_wrapper">
-          <h1>
-            Ти Сергій?
-          </h1>
-          <div class="buttons">
-            <button class="accept" onclick="stepsController.agree()">
-              Так
-            </button>
-            <button class="decline" onclick="stepsController.disagree()" >
-              Ні
-            </button>
-          </div>
-        </div>
-
-        <div class="content step_1_wrapper">
-          <h1>
-            Ти Фронтендич?
-          </h1>
-          <div class="buttons">
-            <button class="accept" onclick="stepsController.agree()" >
-              Так
-            </button>
-            <button class="decline" onclick="stepsController.disagree()" >
-              Ні
-            </button>
-          </div>
-        </div>
-
-        <div class="content step_2_wrapper">
-          <h1>
-            Ти Бекендич?
-          </h1>
-          <div class="buttons">
-            <button class="accept" onclick="stepsController.agree()" >
-              Так
-            </button>
-            <button class="decline" onclick="stepsController.disagree()" >
-              Ні
-            </button>
-          </div>
-        </div>
-
-        <div class="content step_3_wrapper">
-          <img class="grass" src="/hello-sergey/assets/love.gif" />
-          <img class="m_contain" src="/hello-sergey/assets/bad.png" />
-        </div>
-
-        <div class="content step_4_wrapper">
-          <h1>
-            Хорошого дня!!!
-          </h1>
-          <img src="/hello-sergey/assets/good.jpg" />
-          <img class="shining" src="/hello-sergey/assets/stars.gif" />
-        </div>
-
-        <div class="content step_5_wrapper">
-          <video src="/hello-sergey/assets/wide_backendich.mp4" loop></video>
+                C27,48.3,48.3,27,74.5,27h322.2c26.2,0,47.5,21.3,47.5,47.5V396.7z" />
+            <path fill="currentColor"
+              d="M344.6,222.1H159.2l47.4-47.5c5.3-5.3,5.3-13.8,0-19.1s-13.8-5.3-19.1,0L117,226c-5.3,5.3-5.3,13.8,0,19.1l70.6,70.5
+                c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1L159.1,249h185.5c7.5,0,13.5-6,13.5-13.5S352.1,222.1,344.6,222.1z" />
+          </g>
+        </svg>
+      </a>
+      <p class="header_text_block">
+        Nice to see You on stupid things 🤪! If you find a bug or have a proposal leave it at <a
+          href="https://github.com/p1nta/stupid-things/issues" target="_blank">github</a> or <a
+          href="mailto:crispworm@gmail.com">write me a letter</a>!
+      </p>
+    </header>
+    <div class="app_wrapper">
+      <div class="content step_0_wrapper">
+        <h1>
+          Ти Сергій?
+        </h1>
+        <div class="buttons">
+          <button class="accept" onclick="stepsController.agree()">
+            Так
+          </button>
+          <button class="decline" onclick="stepsController.disagree()">
+            Ні
+          </button>
         </div>
       </div>
+
+      <div class="content step_1_wrapper">
+        <h1>
+          Ти Фронтендич?
+        </h1>
+        <div class="buttons">
+          <button class="accept" onclick="stepsController.agree()">
+            Так
+          </button>
+          <button class="decline" onclick="stepsController.disagree()">
+            Ні
+          </button>
+        </div>
+      </div>
+
+      <div class="content step_2_wrapper">
+        <h1>
+          Ти Бекендич?
+        </h1>
+        <div class="buttons">
+          <button class="accept" onclick="stepsController.agree()">
+            Так
+          </button>
+          <button class="decline" onclick="stepsController.disagree()">
+            Ні
+          </button>
+        </div>
+      </div>
+
+      <div class="content step_3_wrapper">
+        <img class="grass" src="/hello-sergey/assets/love.gif" />
+        <img class="m_contain" src="/hello-sergey/assets/bad.png" />
+      </div>
+
+      <div class="content step_4_wrapper">
+        <h1>
+          Хорошого дня!!!
+        </h1>
+        <img src="/hello-sergey/assets/good.jpg" />
+        <img class="shining" src="/hello-sergey/assets/stars.gif" />
+      </div>
+
+      <div class="content step_5_wrapper">
+        <video src="/hello-sergey/assets/wide_backendich.mp4" loop></video>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
