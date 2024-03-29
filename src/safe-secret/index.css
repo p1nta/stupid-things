@@ -40,8 +40,8 @@ input[type=number] {
 .number_input {
   border: 2px solid black;
   color: rgb(12, 167, 137);
-  width: 75px;
-  height: 75px;
+  width: min(75px, calc(50vw / 4));
+  height: min(75px, calc(50vw / 4));
   border-radius: 15px;
   text-align: center;
   font-size: 42px;
@@ -52,7 +52,8 @@ input[type=number] {
   background-color: rgb(18, 205, 212);
   color: white;
   padding: 0 30px;
-  height: 75px;
+  height: min(75px, calc(50vw / 4));
+  max-width: calc(50% - 20px);
   border-radius: 15px;
   text-align: center;
   font-size: 42px;

@@ -1,6 +1,6 @@
 function main() {
   const initialState = {
-    attemptsAllowed: 1,
+    attemptsAllowed: 5,
     attemptsUsed: 0,
     numbers: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
     answer: ['0', '1', '2', '3'],
